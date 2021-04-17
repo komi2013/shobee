@@ -2,3 +2,4 @@ go
 public/data/*
 common/conf.*
 log/*
+go.sum

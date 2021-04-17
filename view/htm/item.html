@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rule</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <script src="/plugin/min.js"></script>
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/pc.css" media="only screen and (min-width : 711px)">
+    <link rel="stylesheet" href="/css/sp.css" media="only screen and (max-width : 710px)">
+    <meta name="viewport" content="width=device-width, user-scalable=no" >
+  </head>
+<style>
+body {
+    width: 960px;
+}
+.header {
+  display: flex;
+  flex-wrap: wrap;
+}
+.header_right {
+  width: 100%;
+}
+
+@media (min-width: 700px) {
+  .header_right {
+    width: 64%;
+    text-align: right;
+  }
+  .logo_space {
+    width: 35%;
+  }
+}
+
+.sprite_header {
+  background: url(/img/header.png) no-repeat;
+}
+
+.logo {
+  display: inline-block;
+  width: 314px;
+  height: 70px;
+  /* background-size: 314px 250px; */ 
+  background-position: 0 -70px;
+  margin: 0 0 0 3px;
+}
+.mail {
+  display: inline-block;
+  width: 30px;
+  height: 24px;
+  background-position: -44px -19px;
+  background-size: 210px 130px;
+  margin: 30px -3px 0 3px;
+}
+.favorite {
+  display: inline-block;
+  width: 28px;
+  height: 32px;
+  background-position: -100px -34px;
+  margin: 20px -4px 0 3px;
+}
+.login {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-position: -132px -35px;
+  margin: 20px -6px 0 3px;
+}
+.header_right span {
+  font-size: 12px;
+  vertical-align: super;
+}
+.dd1_1{
+  display: inline-block;
+  position: relative;
+  margin-right: 6px;
+}
+.dd1_2{
+  visibility: hidden;
+  position: absolute;
+  top: 10px;
+  left: -40px;
+  margin-right: 16px;
+  z-index: 1;
+}
+#lang {
+  width: 46px;
+  position: absolute;
+  left: 0px;
+  height: 24px;
+  opacity: 0;
+  cursor: pointer;
+}
+#lang:checked + .dd1_2 {
+  visibility: visible;
+}
+.en {
+  display: inline-block;
+  width: 30px;
+  height: 24px;
+  background-position: -160px -19px;
+  background-size: 210px 130px;
+  cursor: pointer;
+}
+.ja {
+  display: inline-block;
+  width: 30px;
+  height: 24px;
+  background-position: -122px -19px;
+  background-size: 210px 130px;
+  cursor: pointer;
+}
+</style>
+<body>
+
+<div class='header'>
+  <div class='logo_space'>
+    <i class="sprite_header logo"></i>
+  </div>
+  <div class='header_right'>
+    <li class="dd1_1">
+    <i class="sprite_header en"></i><span style="color:blue;">▼</span>
+    <input type="checkbox" id="lang">
+    <ul class="dd1_2">
+      <i class="sprite_header en" onclick="swLang('en')"></i>
+      <i class="sprite_header ja" onclick="swLang('ja')"></i>
+    </ul>
+    </li>
+    <a href="/"><i class="sprite_header mail"></i><span>お知らせ一覧</span></a>
+    <a href="/"><i class="sprite_header favorite"></i><span>お気に入り</a>
+    <a href="/"><i class="sprite_header login"></i><span>ログイン｜会員登録</span></a>
+  </div>
+</div>
+
+<style>
+.dd2_1{
+  display: inline-block;
+  position: relative;
+  margin: 0px 6px 0px 6px;
+  cursor: pointer;
+}
+#search_detail {
+  width: 60px;
+  position: absolute;
+  left: 0px;
+  height: 30px;
+  opacity: 0;
+  cursor: pointer;
+}
+#search_detail:checked + .dd2_2 {
+  visibility: visible;
+}
+.dd2_2{
+  visibility: hidden;
+  position: absolute;
+  width: 500px;
+  left: -200px;
+  text-align: left;
+  /* top: 10px;
+  left: -50px;
+  margin-right: 16px; */
+}
+
+</style>
+<div class='search'>
+  <div class='search_txt' style="display: inline-block;">
+    <input type="text">🔍
+  </div>
+  <div class="dd2_1"><span style="color:blue;">詳細検索</span>
+    <input type="checkbox" id="search_detail">
+    <table class="dd2_2">
+      <tr>
+        <td style="width:150px;">含まないキーワード</td>
+        <td><input type="text"></td>
+      </tr>
+      <tr>
+        <td>ブランド</td>
+        <td>
+          <select name="brand">
+            <option value="">--Please choose an option--</option>
+            <option value="dog">Dog</option>
+            <option value="cat">Cat</option>
+          </select>
+        </td>
+      </tr>
+      <!-- <tr>
+        <td>カテゴリ</td>
+        <td>komatsu</td>
+      </tr>
+      <tr>
+        <td>コンディション</td>
+        <td>komatsu</td>
+      </tr>
+      <tr>
+        <td>性別</td>
+        <td>komatsu</td>
+      </tr>
+      <tr>
+        <td>サイズ</td>
+        <td>komatsu</td>
+      </tr>
+      <tr>
+        <td>カラー</td>
+        <td>komatsu</td>
+      </tr> -->
+      <tr>
+        <td>価格</td>
+        <td><input type="text" placeholder="低い価格" style="width: 100px;"> ~ <input type="text" placeholder="高い価格" style="width: 100px;"></td>
+      </tr>
+      <tr>
+        <td>素材</td>
+        <td>
+          <input type="checkbox" id="scales"><label for="scales">Scales</label>
+          <input type="checkbox" id="scales1"><label for="scales1">Scales1</label>
+        </td>
+      </tr>
+      <!-- <tr>
+        <td>新着</td>
+        <td>komatsu</td>
+      </tr> -->
+    </table>
+  </div>
+</div>
+
+<style>
+
+</style>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-57298122-1"></script>
+<script>
+
+function swLang(lang){
+  document.cookie = 'lang='+lang+'; Path=/; Expires=Thu, 01 Jan 2099 00:00:01 GMT;';
+  location.href = '';
+}
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-57298122-1');
+</script>
+
+</body>
+</html>
+

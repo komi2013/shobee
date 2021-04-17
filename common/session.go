@@ -1,98 +1,111 @@
 package common
 
 import (
-	// "fmt"
+	"fmt"
 	"log"
 	"net/http"
+	"encoding/json"
 	"strconv"
 	"time"
+	"context"
+    "github.com/go-redis/redis/v8"
 )
 
+var ctx = context.Background()
+
 // SetUser save id and current time
-func SetUser(w http.ResponseWriter, r *http.Request, id int) {
-	txt := strconv.Itoa(id)
-	txt = Encrypt(SsKey, txt)
+func SetUser(w http.ResponseWriter, r *http.Request, uid int) {
+	id := strconv.Itoa(uid)
+	now := time.Now().Format("2006-01-02 15:04:05")
+
+	value, _ := json.Marshal([]string{id,now,now})
+
+	rand := StringRand(20)
+
+	rdb := redis.NewClient(&redis.Options{
+        Addr:     RedisConnect,
+        Password: "", // no password set
+        DB:       0,  // use default DB
+    })
+
+    err := rdb.Set(ctx, rand, string(value), 60000000000 * 60 * 24 * 3).Err()
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Println("key", string(value))
+	fmt.Println("rand", rand)
+
 	cookie := &http.Cookie{
 		Name:     "ss",
-		Value:    txt,
-		MaxAge:   101556952,
+		Value:    rand,
+		MaxAge:   86400 * 3,
 		Secure:   true,
 		HttpOnly: true,
 		Path:     "/",
 	}
 	http.SetCookie(w, cookie)
-	txt = time.Now().Format("2006-01-02 15:04:05")
-	txt = Encrypt(T1Key, txt)
-	cookie1 := &http.Cookie{
-		Name:     "ti",
-		Value:    txt,
-		MaxAge:   101556952,
-		Secure:   true,
-		HttpOnly: true,
-		Path:     "/",
-	}
-	http.SetCookie(w, cookie1)
 }
 
-// GetUser check value exsist decrytable not expired
+// GetUser check value exsist not expired
 func GetUser(w http.ResponseWriter, r *http.Request) int {
-	usrID := 0
 	cookie, err := r.Cookie("ss")
 	if err != nil {
 		return 0
 	}
-	ss := Decrypt(SsKey, cookie.Value)
+	rdb := redis.NewClient(&redis.Options{
+        Addr:     RedisConnect,
+        Password: "", // no password set
+        DB:       0,  // use default DB
+    })
+    js, err := rdb.Get(ctx, cookie.Value).Result()
+    if err != nil {
+        panic(err)
+    }
 
-	delete := false
-	if ss == "" {
-		log.Print("ss is wrong: ", err)
-		delete = true
-	}
-	usrID, err = strconv.Atoi(ss)
+	log.Print("redis json: ", js)
+	var d = []string{}
+    if err := json.Unmarshal([]byte(js), &d); err != nil {
+        panic(err)
+    }
+    fmt.Println(d[1])
+	stampTime, err := time.Parse("2006-01-02 15:04:05", d[1])
 	if err != nil {
-		log.Print("ss error: ", err)
+		log.Print("time parse: ", err)
 	}
-	cookie, err = r.Cookie("ti")
-	if err != nil {
-		log.Print("No ti Cookie: ", err)
+	addDays := stampTime.AddDate(0, 0, 30)
+	fmt.Println(addDays)
+	if time.Now().After(addDays) {
+		log.Print(d[0] + "session expired")
+		return 0
 	}
-	t1 := Decrypt(T1Key, cookie.Value)
-
-	if t1 == "" {
-		log.Print("ti is wrong: ", err)
-		delete = true
-	}
-	stampTime, err := time.Parse("2006-01-02 15:04:05", t1)
-
-	if err != nil {
-		log.Print("time.Parse error: ", err)
-		delete = true
-	}
-	t1Add := stampTime.AddDate(1, 0, 0)
-	if time.Now().After(t1Add) {
-		log.Print("session expired")
-		delete = true
-	}
-	if delete {
+	stampTime, err = time.Parse("2006-01-02 15:04:05", d[2])
+	addDays = stampTime.AddDate(0, 0, 2)
+	fmt.Println(addDays)
+	if time.Now().After(addDays) { // regenerate session id
+		rdb.Del(ctx, cookie.Value)
+		rand := StringRand(20)
+		now := time.Now().Format("2006-01-02 15:04:05")
+		value, _ := json.Marshal([]string{d[0],d[1],now})
+		err := rdb.Set(ctx, rand, value, 60000000000 * 60 * 24 * 3).Err()
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("key", string(value))
+		fmt.Println("rand", rand)	
 		cookie := &http.Cookie{
 			Name:     "ss",
-			Value:    "",
-			MaxAge:   0,
+			Value:    rand,
+			MaxAge:   86400 * 3,
 			Secure:   true,
 			HttpOnly: true,
 			Path:     "/",
 		}
 		http.SetCookie(w, cookie)
-		cookie1 := &http.Cookie{
-			Name:     "ti",
-			Value:    "",
-			MaxAge:   0,
-			Secure:   true,
-			HttpOnly: true,
-			Path:     "/",
-		}
-		http.SetCookie(w, cookie1)
-		return 0
+	}
+	usrID, err := strconv.Atoi(d[0])
+	if err != nil {
+		panic(err)
 	}
 	return usrID
 }
