@@ -6,8 +6,6 @@ body {
 }
 table {
     border-collapse: collapse;
-    width: 100%;
-    text-align: center;
 }
 .icon {
   max-height: 48px;

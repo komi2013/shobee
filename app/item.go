@@ -6,10 +6,12 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"sort"
 	"strconv"
 
 	// "strconv"
 	"strings"
+	"time"
 
 	"demo/common"
 
@@ -33,32 +35,24 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	query := `SELECT article_number,shipping_fee,sku_status,sku_imgs,sku_price,model_number,
-	cost,service_charge,weight,category_id,genre_id,sku_quantity
+	query := `SELECT sku_imgs,sku_price,model_number,category_id,genre_id,sku_quantity
 	FROM t_sku WHERE item_id = $1 limit 1` // if multiple variation
 	rows, err := db.Query(query, itemId)
 	if err != nil {
 		fmt.Println(query)
 		fmt.Println(err)
 	}
-	type Sku struct {
-		ArticleNumber string
-		ShippingFee   float64
-		SkuStatus     string
-		SkuImgs       string
-		SkuPrice      float64
-		ModelNumber   string
-		Cost          float64
-		ServiceCharge float64
-		Weight        float64
-		CategoryId    int
-		GenreId       int
-		SkuQuantity   float64
+	type sku struct {
+		SkuImgs     string
+		SkuPrice    float64
+		ModelNumber string
+		CategoryId  int
+		GenreId     int
+		SkuQuantity float64
 	}
-	var s Sku
+	var s sku
 	for rows.Next() {
-		if err := rows.Scan(&s.ArticleNumber, &s.ShippingFee, &s.SkuStatus, &s.SkuImgs, &s.SkuPrice, &s.ModelNumber,
-			&s.Cost, &s.ServiceCharge, &s.Weight, &s.CategoryId, &s.GenreId, &s.SkuQuantity); err != nil {
+		if err := rows.Scan(&s.SkuImgs, &s.SkuPrice, &s.ModelNumber, &s.CategoryId, &s.GenreId, &s.SkuQuantity); err != nil {
 			log.Print(err)
 		}
 	}
@@ -70,12 +64,12 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(query)
 		fmt.Println(err)
 	}
-	type TranslationItem struct {
+	type translationItem struct {
 		ItemName        string
 		ItemDescription string
 		ItemExactName   string
 	}
-	var t TranslationItem
+	var t translationItem
 	for rows.Next() {
 		if err := rows.Scan(&t.ItemName, &t.ItemDescription, &t.ItemExactName); err != nil {
 			log.Print(err)
@@ -129,23 +123,129 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	fmt.Printf("%#v\n", vList)
 	// fmt.Printf("%#v\n", ids)
 
+	type category struct {
+		Level        int
+		CategoryID   int
+		CategoryName string
+	}
+
+	type mCategoryTree struct {
+		LeafID    int // leaf_id
+		Level1    int // level_1
+		Level2    int // level_2
+		Level3    int // level_3
+		Level4    int // level_4
+		Level5    int // level_5
+		Level6    int // level_6
+		Level7    int // level_7
+		Level8    int // level_8
+		UpdatedAt time.Time
+	}
+
+	convert := make(map[int]string)
+	var tree [][2]int
+	var x [2]int
+	rows, err = db.Query("SELECT * FROM m_category_tree WHERE leaf_id = $1", s.CategoryId)
+	if err != nil {
+		log.Print(err)
+	}
+	whereIn := ""
+	for rows.Next() {
+		r := mCategoryTree{}
+		if err := rows.Scan(&r.LeafID, &r.Level1, &r.Level2, &r.Level3, &r.Level4, &r.Level5, &r.Level6, &r.Level7, &r.Level8, &r.UpdatedAt); err != nil {
+			log.Print(err)
+		}
+		whereIn = strconv.Itoa(r.Level1)
+		x[0] = 1
+		x[1] = r.Level1
+		tree = append(tree, x)
+		convert[r.Level1] = ""
+		if r.Level2 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level2)
+			x[0] = 2
+			x[1] = r.Level2
+			tree = append(tree, x)
+			convert[r.Level2] = ""
+		}
+		if r.Level3 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level3)
+			x[0] = 3
+			x[1] = r.Level3
+			tree = append(tree, x)
+			convert[r.Level3] = ""
+		}
+		if r.Level4 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level4)
+			x[0] = 4
+			x[1] = r.Level4
+			tree = append(tree, x)
+			convert[r.Level4] = ""
+		}
+		if r.Level5 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level5)
+			x[0] = 5
+			x[1] = r.Level5
+			tree = append(tree, x)
+			convert[r.Level5] = ""
+		}
+		if r.Level6 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level6)
+			x[0] = 6
+			x[1] = r.Level6
+			tree = append(tree, x)
+			convert[r.Level6] = ""
+		}
+		if r.Level7 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level7)
+			x[0] = 7
+			x[1] = r.Level7
+			tree = append(tree, x)
+			convert[r.Level7] = ""
+		}
+		if r.Level8 > 0 {
+			whereIn = whereIn + "," + strconv.Itoa(r.Level8)
+			x[0] = 8
+			x[1] = r.Level8
+			tree = append(tree, x)
+			convert[r.Level8] = ""
+		}
+	}
+	var breadCrumb []category
+	if whereIn != "" {
+		rows, err = db.Query(`SELECT category_id, category_name_` + lang + ` FROM m_category WHERE category_id in (` + whereIn + `)`)
+		if err != nil {
+			log.Print(err)
+		}
+		for rows.Next() {
+			r := category{}
+			if err := rows.Scan(&r.CategoryID, &r.CategoryName); err != nil {
+				log.Print(err)
+			}
+			convert[r.CategoryID] = r.CategoryName
+			// categoryName = append(categoryName, r)
+			// breadCrumb[r.CategoryID]["name"] = r.CategoryName
+		}
+		for _, v := range tree {
+			y := category{}
+			y.Level = v[0]
+			y.CategoryID = v[1]
+			y.CategoryName = convert[v[1]]
+			breadCrumb = append(breadCrumb, y)
+		}
+		sort.Slice(breadCrumb, func(i, j int) bool { return breadCrumb[i].Level < breadCrumb[j].Level }) // DESC
+	}
+
 	type View struct {
-		// CacheV       string
-		// Q            common.TQuestion
-		// Available    int
-		// BreadCrumb   []BreadCrumb
-		// Title        string
-		// Qtxt         template.HTML
-		Sku             Sku
-		TranslationItem TranslationItem
+		Sku             sku
+		TranslationItem translationItem
 		VariationList   map[int]map[string]string
+		BreadCrumb      []category
 	}
 	var view View
 	view.Sku = s
 	view.TranslationItem = t
 	view.VariationList = vList
-	//m_category_tree, m_category
+	view.BreadCrumb = breadCrumb
 	tpl := template.Must(template.ParseFiles("view/item.tmpl"))
 	tpl.Execute(w, view)
-	// fmt.Fprint(w, `{"Status":"1"}`)
 }
