@@ -21,9 +21,6 @@
 }
 
 @media (max-width: 700px) {
-  .header_right {
-    /* margin-top: -30px; */
-  }
   .sprite_header + span {
     display: none;
   }
@@ -168,23 +165,44 @@
 #search_detail + input:checked + .dd2_2 {
   visibility: visible;
 }
-.dd2_2{
-  visibility: hidden;
-  position: absolute;
-  text-align: left;
-  background-color: gainsboro;
-  margin: 42px 0 0 -250px;
+@media (max-width: 700px) {
+  .dd2_2{
+    visibility: hidden;
+    position: absolute;
+    text-align: left;
+    background-color: gainsboro;
+    margin: 42px 0 0 -220px;
+    width: 300px;
+  }
 }
-.dd2_2_left{
-  width: 150px;
-  padding: 2%;
-  text-align: right;
-}
-.dd2_2_right{
-  width: 150px;
-  padding: 2%;
+@media (min-width: 700px) {
+  .dd2_2{
+    visibility: hidden;
+    position: absolute;
+    text-align: left;
+    background-color: gainsboro;
+    margin: 42px 0 0 -340px;
+    width: 400px;
+    padding: 10px;
+  }
 }
 
+.dd2_2 div {
+  padding: 2%;
+}
+.dd2_2 input[type="text"] {
+  padding: 6px 2px;
+  width: 280px;
+}
+.dd2_2 select {
+  padding: 4px 2px;
+  width: 280px;
+}
+.multi_option {
+  display: inline-block;
+  background-color: white;
+  padding: 3px;
+}
 </style>
 
 <div >
@@ -194,62 +212,26 @@
   <div style="display: inline-block; width:28%; margin-bottom: 26px;">
     <span id="search_detail" >詳細検索</span>
     <input type="checkbox">
-    <table class="dd2_2">
       <tr>
-        <td class="dd2_2_left">含まない<br>キーワード</td>
-        <td class="dd2_2_right"><input type="text" style="width: 70px;"></td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">ブランド</td>
-        <td class="dd2_2_right" >
-          <select name="brand" style="width: 70px;">
-            <option value="">--Please choose an option--</option>
-            <option value="dog">Dog<br>dd</option>
-            <option value="cat">Cat</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">カテゴリ</td>
-        <td class="dd2_2_right">komatsu</td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">コンディション</td>
-        <td class="dd2_2_right">komatsu</td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">性別</td>
-        <td class="dd2_2_right">komatsu</td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">サイズ</td>
-        <td class="dd2_2_right">komatsu</td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">カラー</td>
-        <td class="dd2_2_right">komatsu</td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">価格</td>
-        <td class="dd2_2_right" >
-          <input type="text" placeholder="低い価格" style="width: 70px;"> ~ <input type="text" placeholder="高い価格" style="width: 70px;">
-        </td>
-      </tr>
-      <tr>
-        <td class="dd2_2_left">素材</td>
-        <td class="dd2_2_right">
-          <input type="checkbox" id="scales"><label for="scales">Scales</label>
-          <input type="checkbox" id="scales1"><label for="scales1">Scales1</label>
-        </td>
-      </tr>
-      <!-- <tr>
-        <td>新着</td>
-        <td>komatsu</td>
-      </tr> -->
-    </table>
+    <div class="dd2_2">
+      <div>含まないキーワード<input type="text" placeholder="含まないキーワード"></div>
+      <div>
+        <select name="brand">
+          <option value="">ブランド--</option>
+          <option value="dog">Dogdd</option>
+          <option value="cat">Cat</option>
+        </select>
+      </div>
+      <div>
+        <input type="text" placeholder="低い価格" style="width: 100px;"> ~ <input type="text" placeholder="高い価格" style="width: 100px;">
+      </div>
+      <div>ブランド<br>
+        <label for="scales" class="multi_option"><input type="checkbox" id="scales">Scales</label>
+        <label for="scales1" class="multi_option"><input type="checkbox" id="scales1">Scales1</label>
+      </div>
+    </div>
   </div>
 </div>
-
 
 <style>
 
@@ -399,6 +381,15 @@
 </div>
 
 <style>
+.extra {
+  width:100%;
+  margin-top: 30px;
+  border-top: thin solid gainsboro;
+}
+.extra span {
+  margin: 6px;
+  display: inline-block;
+}
 /* m_genre.html_1 */
 @media (max-width: 700px) {
   .horizon_sp {
@@ -427,6 +418,7 @@
 }
 </style>
 
+<div class="extra"><span>サイズについて</span></div>
 <div class="genre">ワンピース【151〜155ｃｍの方】</div>
 <div class="horizon_sp">
   <div class="size_pic">
@@ -538,50 +530,30 @@
 <p style="text-align: right;">
   <a href="https://www.defactostandard.co.jp/auction/kitake_guide/" target="_blank" >&gt;&gt;他の着用イメージを見る</a>
 </p>
+
 <style>
 
-.sprite_size {
-  background: url(/img/sprite_ext.png) no-repeat;
+.extra_desc {
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-position: -234px -86px;
-}
-.sprite_extra {
-  background: url(/img/sprite_ext.png) no-repeat;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-position: -180px -86px;
-}
-.sprite_material {
-  background: url(/img/sprite_ext.png) no-repeat;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-position: -234px -140px;
-}
-@media (min-width: 700px) {
-  .optional_list {
-    display: inline-block;
-  }
-}
-.optional_list span {
-  vertical-align: super;
+  margin: 10px;
+  flex-wrap:wrap;
+  width: 300px;
+  vertical-align: middle;
+  text-align: left;
 }
 </style>
-<div class="optional_list">
-  <a href="/ct/help-size" target="_blank"><i class="sprite_size"></i>
-    <span>サイズ表記について</span></a>
+
+<div style="text-align: center;">
+<div class="extra_desc">
+  <img src="https://auction.brandear.jp/images/ct/help-size/size_27.gif" style="max-width: 300px;" >
 </div>
-<div class="optional_list">
-  <a href="https://defactostandard.co.jp/auction/yougo/fuzoku.html" target="_blank"><i class="sprite_extra"></i>
-    <span>付属品について</span></a>
+<div class="extra_desc" >
+  <span style="font-weight: bold;">ハンドル・ストラップの長さについて</span><br><br>
+    弊社ではハンドルやストラップの長さを本体から
+    ストラップ最頂部までを採寸しております。
 </div>
-<div class="optional_list">
-  <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank"><i class="sprite_material"></i>
-    <span>素材について</span></a>
 </div>
+
 
 <style>
 
@@ -603,7 +575,7 @@
 }
 </style>
 
-<div>rank</div>
+<div class="extra"><span>ランキング</span></div>
 <div style="text-align: center;">
   <div class="brand_pic">
     <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
@@ -651,11 +623,10 @@
 <br>
 
 <style>
-.total_review span{
+.word{
   margin:10px;
   font-size: 12px;
 }
-
 .star5_rating{
     position: relative;
     z-index: 0;
@@ -703,10 +674,9 @@
 }
 </style>
 
-<div class="total_review">
-  <div><span>オールドイングランドのレビュー</span><a href="/" style="margin: 10px;font-size: 12px;">すべて見る</a></div>
-  <span>オールドイングランドの総合評価</span><span class="star5_rating" data-rate="3.5"></span>
-</div>
+<div class="extra"><span>オールドイングランドのレビュー</span></div>
+<span class="word">総合評価</span><span class="word star5_rating" data-rate="3.5"></span>
+<a href="/" class="word">すべて見る</a>
 <div style="text-align: center;">
 <div class="review_item">
   <table>
@@ -747,69 +717,28 @@
 </div>
 
 <style>
-  .search{
-    margin: 20px 0 20px 0;
-  }
-  .search div{
-    display: inline-block;
-    margin: 10px;
-    flex-wrap:wrap;
-  }
-  .search a{
-    display: inline-block;
-    margin: 10px;
-    flex-wrap:wrap;
-    background-color: gainsboro;
-    padding: 10px;
-  }
+.tag{
+  display: inline-block;
+  margin: 10px;
+  flex-wrap:wrap;
+  background-color: gainsboro;
+  padding: 10px;
+  border-radius: 20px;
+}
 </style>
-<div class="search">
-  <div>TopCategoryのGenreをサイズVariationから探す</div><div>サイズ選定方法を見る</div><br>
-  <a href="/">XSサイズ</a><a href="/">Sサイズ</a>
-</div>
-<div class="search">
-  <div>TopCategoryのGenre</div><br>
-  <a href="/">食器</a>
-</div>
-<div class="search">
-  <div>Genreのお勧めブランド</div><br>
-  <a href="/">コーチ</a><a href="/">ルイ・ヴィトン</a><a href="/">グッチ</a>
-</div>
+<div class="extra"><span>TopCategoryのGenreをサイズVariationから探す</span></div>
+<a href="/" class="tag">XSサイズ</a><a href="/" class="tag">Sサイズ</a>
+<a href="https://auction.brandear.jp/ct/size_search">サイズ選定方法を見る</a>
+<div class="extra"><span>TopCategoryのGenre</span></div>
+<a href="/" class="tag">食器</a>
+<div class="extra"><span>Genreのお勧めブランド</span></div>
+<a href="/" class="tag">コーチ</a><a href="/" class="tag">ルイ・ヴィトン</a><a href="/" class="tag">グッチ</a>
+
 <div style="text-align: center;">
   <a href="https://auction.brandear.jp/ct/genre/bag">
   <img src="https://auction.brandear.jp/images/search/bag.jpg" style="max-width: 100%;"><br>
     人気ブランドが勢揃い！形や色で探せるバッグ特集ページ！
   </a>
-</div>
-<style>
-.extra {
-  width:100%;
-  /* height:30px; */
-  background-color: gainsboro;
-}
-.extra span {
-  margin: 6px;
-  display: inline-block;
-}
-.extra_desc {
-  display: inline-block;
-  margin: 10px;
-  flex-wrap:wrap;
-  width: 300px;
-  vertical-align: middle;
-  text-align: left;
-}
-</style>
-<div class="extra"><span>サイズについて</span></div>
-<div style="text-align: center;">
-<div class="extra_desc">
-  <img src="https://auction.brandear.jp/images/ct/help-size/size_27.gif" style="max-width: 300px;" >
-</div>
-<div class="extra_desc" >
-  <span style="font-weight: bold;">ハンドル・ストラップの長さについて</span><br><br>
-    弊社ではハンドルやストラップの長さを本体から
-    ストラップ最頂部までを採寸しております。
-</div>
 </div>
 
 <style>
@@ -844,6 +773,7 @@
   text-align: left;
 }
 </style>
+
 <div class="extra"><span>支持される理由</span></div>
 <div>
   <div style="width:100%;text-align: center;">
@@ -878,6 +808,50 @@
 </div>
 
 <div class="extra"><span>ご注意</span></div>
+<style>
+.sprite_size {
+  background: url(/img/sprite_ext.png) no-repeat;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-position: -234px -86px;
+}
+.sprite_extra {
+  background: url(/img/sprite_ext.png) no-repeat;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-position: -180px -86px;
+}
+.sprite_material {
+  background: url(/img/sprite_ext.png) no-repeat;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-position: -234px -140px;
+}
+@media (min-width: 700px) {
+  .optional_list {
+    display: inline-block;
+  }
+}
+.optional_list span {
+  vertical-align: super;
+}
+</style>
+<div class="optional_list">
+  <a href="/ct/help-size" target="_blank"><i class="sprite_size"></i>
+    <span>サイズ表記について</span></a>
+</div>
+<div class="optional_list">
+  <a href="https://defactostandard.co.jp/auction/yougo/fuzoku.html" target="_blank"><i class="sprite_extra"></i>
+    <span>付属品について</span></a>
+</div>
+<div class="optional_list">
+  <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank"><i class="sprite_material"></i>
+    <span>素材について</span></a>
+</div>
+  
 <div style="font-size: 14px;margin: 10px;">
   <p>※基本的に返品はお受けできませんので、商品詳細をよくご確認の上、ご入札くださいませ。</p>
   <p>※システムトラブル等の原因により、弊社にてオークションを中断し、終了させて頂く場合がございます。 誠に恐縮ではございますが、予めご了承の上、ご入札頂けます様お願い申し上げます。</p>
@@ -901,11 +875,18 @@
   <p>※商品は終了時間前に出品を取り消す場合がございます。お早めにご入札ください。</p>
   <p>※弊社では当サイト以外での販売も行っております。商品売り切れの際には、お取引・出品をキャンセルさせていただく場合がございます。予めご了承くださいませ。</p>
 </div>
+<style>
+.footer a {
+  margin:10px;
+  font-size: 14px;
+}
+</style>
 
+<div class="footer">
 <a href="/">ご利用ガイド</a><a href="/">お問い合わせ</a><a href="/">会社概要</a><a href="/">ご利用規約</a>
 <a href="/">プライバシーポリシー</a><a href="/">特定商取引法に基づく表記</a><a href="/">特定商取引法に基づく表記</a>
 <div>Copyright(c) Defactostandard,Ltd. All rights reserved.</div>
-
+</div>
 <br>
 <br>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57298122-1"></script>

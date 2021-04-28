@@ -7,8 +7,4 @@ body {
 table {
     border-collapse: collapse;
 }
-.icon {
-  max-height: 48px;
-  vertical-align: middle;
-  cursor: pointer;
-}
+
