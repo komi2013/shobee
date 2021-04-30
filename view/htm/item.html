@@ -12,234 +12,80 @@
   </head>
 <style>
 
-.header {
-  display: flex;
-  flex-wrap: wrap;
-}
-.sprite_header {
-  background: url("/img/header.png") no-repeat;
-}
-
 @media (max-width: 700px) {
-  .sprite_header + span {
-    display: none;
-  }
-  .logo {
-    display: inline-block;
-    width: 48px;
-    height: 48px;
-    background-position: 0 -72px;
-    margin: 0 0 0 3px;
-  }
+
 }
 @media (min-width: 700px) {
   body {
     width: 960px;
   }
-  .header_right {
-    width: 64%;
-    text-align: right;
-  }
-  .logo_space {
-    width: 35%;
-  }
-  .logo {
-    display: inline-block;
-    width: 290px;
-    height: 62px;
-    background-position: 0 -72px;
-    margin: 0 0 0 3px;
-  }
 }
 
-
-.mail {
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: black;
+  height: 50px;
+}
+.header div {
   display: inline-block;
-  width: 30px;
-  height: 24px;
-  background-position: -44px -19px;
-  background-size: 210px 130px;
-  margin: 30px -3px 0 3px;
+  text-align: center;
 }
-.favorite {
+.header_left {
   display: inline-block;
-  width: 28px;
-  height: 28px;
-  background-position: -100px -34px;
-  margin: 20px -4px 0 3px;
+  width: 25%;
+  text-align: center;
 }
-.login {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  background-position: -132px -35px;
-  margin: 20px -6px 0 3px;
+.header input {
+  height: 42px;
+  width:  100%;
+  border-right: none;
+  border-left: none;
+  border-top: none;
+  background-color: black;
+  border-bottom-color: white;
+  color:white;
+  font-size: 18px;
 }
-.header_right span {
-  font-size: 12px;
-  vertical-align: super;
-}
-.dd1_1{
-  display: inline-block;
-  position: relative;
-}
-.dd1_2{
-  visibility: hidden;
-  position: absolute;
-  top: 10px;
-  left: -40px;
-  margin-right: 16px;
-  z-index: 1;
-}
-#lang {
-  width: 46px;
-  position: absolute;
-  left: 0px;
-  height: 24px;
-  opacity: 0;
-  cursor: pointer;
-}
-#lang:checked + .dd1_2 {
-  visibility: visible;
-}
-.en {
-  display: inline-block;
-  width: 30px;
-  height: 20px;
-  background-position: -166px -28px;
-  background-size: 220px 160px;
-  cursor: pointer;
-}
-.ja {
-  display: inline-block;
-  width: 30px;
-  height: 20px;
-  background-position: -121px -21px;
-  background-size: 210px 130px;
-  cursor: pointer;
-}
-
 </style>
 <body>
 
-<div class='header'>
-  <div class='logo_space'>
-    <i class="sprite_header logo"></i>
+<div class="header" >
+  <div style="width: 10%;">
+    <a href="/" >
+      <img src="/img/man.png" style="margin-top: 10px;max-height: 32px;" >
+      <!-- <span style="vertical-align: super;">login</span> -->
+    </a>
   </div>
-  <div class='header_right'>
-    <li class="dd1_1">
-    <i class="sprite_header en"></i><span style="color:blue;">▼</span>
-    <input type="checkbox" id="lang">
-    <ul class="dd1_2">
-      <i class="sprite_header en" onclick="swLang('en')"></i>
-      <i class="sprite_header ja" onclick="swLang('ja')"></i>
-    </ul>
-    </li>
-    <a href="/"><i class="sprite_header mail"></i><span>お知らせ</span></a>
-    <a href="/"><i class="sprite_header favorite"></i><span>お気に入り</a>
-    <a href="/"><i class="sprite_header login"></i><span>ログイン|会員登録</span></a>
+  <div style="width: 80%;" >
+    <input type="text" >
   </div>
+  <div style="width: 10%;text-align: left;" >
+    <img src="/img/glass.png" style="margin-top: 10px;max-height: 32px;">
+  </div>
+  <!-- <div href="/">
+    <img src="/img/brandear.jpg" style="height:40px;display: none;">
+  </div> -->
 </div>
 
 <style>
-
-.search_txt {
-  line-height: 30px;
-  margin: 4px;
+.bread_crumb {
+  margin: 10px 2px;
+}
+.bread_crumb a {
+  color: black; 
+  font-weight: bold;
   display: inline-block;
-  width: 80%;;
-}
-#search_detail {
-  color: blue;
-  outline: auto;
-  padding: 7px;
-  position: absolute;
-}
-#search_detail + input {
-  width: 80px;
-  height: 34px;
-  cursor: pointer;
-  opacity: 0;
-  position: absolute;
-}
-#search_detail + input:checked + .dd2_2 {
-  visibility: visible;
-}
-@media (max-width: 700px) {
-  .dd2_2{
-    visibility: hidden;
-    position: absolute;
-    text-align: left;
-    background-color: gainsboro;
-    margin: 42px 0 0 -220px;
-    width: 300px;
-  }
-}
-@media (min-width: 700px) {
-  .dd2_2{
-    visibility: hidden;
-    position: absolute;
-    text-align: left;
-    background-color: gainsboro;
-    margin: 42px 0 0 -340px;
-    width: 400px;
-    padding: 10px;
-  }
-}
-
-.dd2_2 div {
-  padding: 2%;
-}
-.dd2_2 input[type="text"] {
-  padding: 6px 2px;
-  width: 280px;
-}
-.dd2_2 select {
-  padding: 4px 2px;
-  width: 280px;
-}
-.multi_option {
-  display: inline-block;
-  background-color: white;
-  padding: 3px;
+  text-decoration: underline;
 }
 </style>
 
-<div >
-  <div style="width: 70%; display:inline-block;">
-    <input type="text" class="search_txt" ><i>🔍</i>
-  </div>
-  <div style="display: inline-block; width:28%; margin-bottom: 26px;">
-    <span id="search_detail" >詳細検索</span>
-    <input type="checkbox">
-      <tr>
-    <div class="dd2_2">
-      <div>含まないキーワード<input type="text" placeholder="含まないキーワード"></div>
-      <div>
-        <select name="brand">
-          <option value="">ブランド--</option>
-          <option value="dog">Dogdd</option>
-          <option value="cat">Cat</option>
-        </select>
-      </div>
-      <div>
-        <input type="text" placeholder="低い価格" style="width: 100px;"> ~ <input type="text" placeholder="高い価格" style="width: 100px;">
-      </div>
-      <div>ブランド<br>
-        <label for="scales" class="multi_option"><input type="checkbox" id="scales">Scales</label>
-        <label for="scales1" class="multi_option"><input type="checkbox" id="scales1">Scales1</label>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-
-</style>
-
-<div>
+<div class="bread_crumb">
   <!-- { range $v := .BreadCrumb } -->
-  &nbsp;<a style="margin: 5px 0px 5px 0px;" href="/category/{$v.Level}/{$v.CategoryID}/"> {$v.CategoryName} </a> > &nbsp;
+  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ１ </a> > 
+  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ２ </a> > 
+  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ3 </a> > 
+  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ4 </a> > 
   <!-- {end} -->
 </div>
 
@@ -259,11 +105,11 @@
 
 @media (min-width: 700px) {
   .main_left {
-    width: 50%;
-    margin: 5%;
+    width: 65%;
+    margin: 2%;
   }
   .sku {
-    width: 40%;
+    width: 30%;
   }
 }
 @media (max-width: 700px) {
@@ -295,7 +141,19 @@
   display: inline-block;
 }
 .pics img {
-  max-height: 300px;
+  max-width: 400px;
+  max-height: 400px;
+}
+.var_name {
+  margin: 20px 10px 0px 10px;
+  display: inline-block;
+  color: gray;
+}
+.var_select {
+  padding: 10px 4px;
+  width: 280px;
+  border-color: gainsboro;
+  background-color: white;
 }
 </style>
 
@@ -325,11 +183,23 @@
   </div>
   </div>
   <div class="sku">
-    <div>COMEX(コメックス) S レディース シルバー グリッター</div>
-    <div style="display:inline-block;" >価格</div>
-    <div style="display:inline-block;" >{.Sku.SkuPrice} 円（税込 11,660 円)</div>
+    <div style="margin: 10px; letter-spacing: 1.3px;color: #2D2D2D;font-size: 20px;">COMEX(コメックス) S レディース シルバー グリッター</div>
+    <div style="margin: 10px;letter-spacing: 2.8px;color: #555;font-weight: 700;font-size: 20px;">11,660 円</div>
+    <div class="var_name">Collection:</div>
+    <select name="var_option" class="var_select">
+      <option value="">ブランド--</option>
+      <option value="dog">Dogdd</option>
+      <option value="cat">Cat</option>
+    </select>
+    <div class="var_name">Collection:</div>
+    <select name="var_option" class="var_select">
+      <option value="">ブランド--</option>
+      <option value="dog">Dogdd</option>
+      <option value="cat">Cat</option>
+    </select>
+    <br><br>
     <div>
-      jid jkdjf odj k jiod kdfji o jkdf jidf jdfjdfkj k jidfj jdfdddd jkd kdfjk jfod jjj
+      一般的に言って、パンくずリストはページの上部に設置されていることが多い。だが下に設置しても何も問題ない。<br>
     </div>
   </div>
 </div>
@@ -339,294 +209,42 @@
   display: flex;
   flex-wrap: wrap;
 }
-
-@media (min-width: 700px) {
-  .attr_right {
-    width: 50%;
-  }
-  .attr_left {
-    width: 50%;
-  }
-}
-@media (max-width: 700px) {
-  .attr_left {
-    width: 97%;
-    margin: 1%;
-  }
-  .attr_right {
-    width: 97%;
-    margin: 1%;
-  }
-}
-.attr td {
-  height: 50px;
-  text-align: left;
-  vertical-align: top;
+.attr_box {
+  display: inline-block;
+  width: 300px;
+  margin: 10px;
 }
 </style>
 
 <div class="attr">
-  <div class="attr_left">
-    <table>
-      <tr><td>name1</td><td>value1</td></tr>
-      <tr><td>name2</td><td>value2</td></tr>
-    </table>
+  <div class="attr_box">
+    <div class="var_name">name1:</div>
+    <div style="display: inline-block;" >value1</div>
   </div>
-  <div class="attr_right">
-    <table>
-      <tr><td>name1</td><td>value1</td></tr>
-      <tr><td>name2</td><td>value2</td></tr>
-    </table>
+  <div class="attr_box">
+    <div class="var_name">name2:</div>
+    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
   </div>
-</div>
-
-<style>
-.extra {
-  width:100%;
-  margin-top: 30px;
-  border-top: thin solid gainsboro;
-}
-.extra span {
-  margin: 6px;
-  display: inline-block;
-}
-/* m_genre.html_1 */
-@media (max-width: 700px) {
-  .horizon_sp {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .horizon_sp::-webkit-scrollbar {
-    background-color: #EEEEEE;
-  }
-  .horizon_sp::-webkit-scrollbar-thumb {
-    background-color: #222222;
-    border-radius: 10px;
-  }
-  .horizon_sp::-webkit-scrollbar-track {
-    background: rgba(100,100,100, .5);
-  }
-}
-
-.size_pic{
-  display: inline-block;
-  margin: 10px;
-  text-align: center;
-}
-.genre {
-  margin: 10px 0 -10px 10px;
-}
-</style>
-
-<div class="extra"><span>サイズについて</span></div>
-<div class="genre">ワンピース【151〜155ｃｍの方】</div>
-<div class="horizon_sp">
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
+  <div class="attr_box">
+    <div class="var_name">name2:</div>
+    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
   </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
+  <div class="attr_box">
+    <div class="var_name">name1:</div>
+    <div style="display: inline-block;" >value1</div>
   </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
+  <div class="attr_box">
+    <div class="var_name">name2:</div>
+    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
   </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
+  <div class="attr_box">
+    <div class="var_name">name2:</div>
+    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
   </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-</div>
-<div class="genre">ワンピース【151〜155ｃｍの方】</div>
-<div class="horizon_sp">
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-</div>
-<div class="genre">ワンピース【151〜155ｃｍの方】</div>
-<div class="horizon_sp">
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-</div>
-<div class="genre">ワンピース【166〜170cmの方】</div>
-<div class="horizon_sp">
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-  <div class="size_pic">
-    <img src="https://auction.brandear.jp/images/search/detail/kitak-guide/w_151_155_onepiece_01.jpg">
-    <br>着丈 80cm
-  </div>
-</div>
-<p style="text-align: right;">
-  <a href="https://www.defactostandard.co.jp/auction/kitake_guide/" target="_blank" >&gt;&gt;他の着用イメージを見る</a>
-</p>
-
-<style>
-
-.extra_desc {
-  display: inline-block;
-  margin: 10px;
-  flex-wrap:wrap;
-  width: 300px;
-  vertical-align: middle;
-  text-align: left;
-}
-</style>
-
-<div style="text-align: center;">
-<div class="extra_desc">
-  <img src="https://auction.brandear.jp/images/ct/help-size/size_27.gif" style="max-width: 300px;" >
-</div>
-<div class="extra_desc" >
-  <span style="font-weight: bold;">ハンドル・ストラップの長さについて</span><br><br>
-    弊社ではハンドルやストラップの長さを本体から
-    ストラップ最頂部までを採寸しております。
-</div>
 </div>
 
 
 <style>
-
-.brand_pic{
-  display: inline-block;
-  margin: 10px 0px;
-  text-align: center;
-  flex-wrap:wrap
-}
-.brand_pic div{
-  width: 118px;
-  font-size: 10px;
-  position: absolute;
-  margin-top: -8px;
-}
-.rank_out {
-  font-size: 10px;
-  margin: 10px;
-}
-</style>
-
-<div class="extra"><span>ランキング</span></div>
-<div style="text-align: center;">
-  <div class="brand_pic">
-    <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
-      <img src="https://image5.brandear.jp/images/booth/ba/search/detail/one-piece/01.jpg">
-      <div>フォクシーニューヨーク</div>
-    </a>
-  </div>
-  <div class="brand_pic">
-    <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
-      <img src="https://image5.brandear.jp/images/booth/ba/search/detail/one-piece/01.jpg">
-      <div>フォクシーニューヨーク</div>
-    </a>
-  </div>
-  <div class="brand_pic">
-    <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
-      <img src="https://image5.brandear.jp/images/booth/ba/search/detail/one-piece/01.jpg">
-      <div>ダイアンフォンファステンバーグ</div>
-    </a>
-  </div>
-  <div class="brand_pic">
-    <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
-      <img src="https://image5.brandear.jp/images/booth/ba/search/detail/one-piece/01.jpg">
-      <div>ダイアンフォンファステンバーグ</div>
-    </a>
-  </div>
-  <div class="brand_pic">
-    <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
-      <img src="https://image5.brandear.jp/images/booth/ba/search/detail/one-piece/01.jpg">
-      <div>ダイアンフォンファステンバーグ</div>
-    </a>
-  </div>
-  <div class="brand_pic">
-    <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank">
-      <img src="https://image5.brandear.jp/images/booth/ba/search/detail/one-piece/01.jpg">
-      <div>ダイアンフォンファステンバーグ</div>
-    </a>
-  </div>
-  <div style="height:20px;">&nbsp;</div>
-  <a class="rank_out" href="/sozai_hikaku.html" target="_blank">7.ダイアンフォンファステンバーグ</a>
-  <a class="rank_out" href="/sozai_hikaku.html" target="_blank">8.ダイアンフォンファステンバーグ</a>
-  <a class="rank_out" href="/sozai_hikaku.html" target="_blank">9.ダイアンフォンファステンバーグ</a>
-  <a class="rank_out" href="/sozai_hikaku.html" target="_blank">10.ダイアンフォンファステンバーグ</a>
-</div>
-
-<br>
-
-<style>
-.word{
-  margin:10px;
-  font-size: 12px;
-}
 .star5_rating{
     position: relative;
     z-index: 0;
@@ -659,236 +277,36 @@
 .star5_rating[data-rate="0.5"]:after{ width: 10%; } /* 星0.5 */
 .star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
 
-.review_item{
-  display: inline-block;
-  margin: 10px;
-  flex-wrap:wrap;
-  width:290px;
-  font-size: 12px;
-}
-.review_item img {
-  max-width: 90px;
-}
-.review_item div {
-  text-align: left;
-}
 </style>
 
-<div class="extra"><span>オールドイングランドのレビュー</span></div>
-<span class="word">総合評価</span><span class="word star5_rating" data-rate="3.5"></span>
-<a href="/" class="word">すべて見る</a>
-<div style="text-align: center;">
-<div class="review_item">
-  <table>
-    <tr>
-      <td rowspan="2">
-        <a href="/"><img src="https://image5.brandear.jp/image1/230/30423862_1.jpg"></a>
-      </td>
-      <td>投稿日 : 2020-02-13</td><td><span class="star5_rating" data-rate="3.5"></span></td>
-    </tr>
-    <tr><td colspan="2"><a href="/">オールドイングランド 長袖セーター サイズ38 M レディース グレー</a></td></tr>
-  </table>
-  <div>思ったより薄手で、袖口も緩いが、ウールの質はよい。なにより、襟の開きが合わせるノースリーブのワンピースとぴったり合っていたので、よかった。</div>
-</div>
-<div class="review_item">
-  <table>
-    <tr>
-      <td rowspan="2">
-        <a href="/"><img src="https://image5.brandear.jp/image1/230/30423862_1.jpg"></a>
-      </td>
-      <td>投稿日 : 2020-02-13</td><td><span class="star5_rating" data-rate="3.5"></span></td>
-    </tr>
-    <tr><td colspan="2"><a href="/">オールドイングランド 長袖セーター サイズ38 M レディース グレー</a></td></tr>
-  </table>
-  <div>思ったより薄手で、袖口も緩いが、ウールの質はよい。なにより、襟の開きが合わせるノースリーブのワンピースとぴったり合っていたので、よかった。</div>
-</div>
-<div class="review_item">
-  <table>
-    <tr>
-      <td rowspan="2">
-        <a href="/"><img src="https://image5.brandear.jp/image1/230/30423862_1.jpg"></a>
-      </td>
-      <td>投稿日 : 2020-02-13</td><td><span class="star5_rating" data-rate="3.5"></span></td>
-    </tr>
-    <tr><td colspan="2"><a href="/">オールドイングランド 長袖セーター サイズ38 M レディース グレー</a></td></tr>
-  </table>
-  <div>思ったより薄手で、袖口も緩いが、ウールの質はよい。なにより、襟の開きが合わせるノースリーブのワンピースとぴったり合っていたので、よかった。</div>
-</div>
+
+<div style="margin: 20px;" >オールドイングランドのバッグ&nbsp;&nbsp;&nbsp;総合評価　
+  <span class="word star5_rating" data-rate="3.5"></span>&nbsp;&nbsp;&nbsp;
+  <a href="/" target=”_blank” style="color: black; font-weight: bold; text-decoration: underline;" >詳細 > > </a>
 </div>
 
 <style>
-.tag{
-  display: inline-block;
-  margin: 10px;
-  flex-wrap:wrap;
-  background-color: gainsboro;
+.footer {
   padding: 10px;
-  border-radius: 20px;
+  background-color: black;
 }
-</style>
-<div class="extra"><span>TopCategoryのGenreをサイズVariationから探す</span></div>
-<a href="/" class="tag">XSサイズ</a><a href="/" class="tag">Sサイズ</a>
-<a href="https://auction.brandear.jp/ct/size_search">サイズ選定方法を見る</a>
-<div class="extra"><span>TopCategoryのGenre</span></div>
-<a href="/" class="tag">食器</a>
-<div class="extra"><span>Genreのお勧めブランド</span></div>
-<a href="/" class="tag">コーチ</a><a href="/" class="tag">ルイ・ヴィトン</a><a href="/" class="tag">グッチ</a>
-
-<div style="text-align: center;">
-  <a href="https://auction.brandear.jp/ct/genre/bag">
-  <img src="https://auction.brandear.jp/images/search/bag.jpg" style="max-width: 100%;"><br>
-    人気ブランドが勢揃い！形や色で探せるバッグ特集ページ！
-  </a>
-</div>
-
-<style>
-.extra_box {
-  width: 280px;
-  display: inline-block;
-  text-align: center;
-  margin: 10px;
-}
-.box_txt {
-  background-color: #484848;
-  color: #fff;
-  padding: 12px;
-}
-.box_txt2 {
-  padding: 12px;
-  border: 2px solid #484848;
-}
-.extra_cap {
-  margin: 20px 0 0;
-  padding: 7px 0 5px;
-  text-align: center;
-  line-height: 1.3em;
-  font-size: 16px;
-  font-weight: bold;
-  border-top: 2px dotted;
-  border-bottom: 2px dotted;
-}
-.extra_under{
-  font-size:13px;
-  margin: -10px 16px 0 16px;
-  text-align: left;
-}
-</style>
-
-<div class="extra"><span>支持される理由</span></div>
-<div>
-  <div style="width:100%;text-align: center;">
-    <div class="extra_box">
-      <dl class="box_txt"> <dt>とにかくブランド品が安い！</dt>
-        <dd>
-          <p style="height: 97px;"><img src="https://auction.brandear.jp/images/ct/introduce02/cticon01.png" ></p>
-        </dd>
-        <dd class="extra_cap">毎日値下げ！</dd>
-      </dl>
-      <p class="extra_under">中には1円まで下がることも。「お気に入り」で要チェック！</p>
-    </div>
-    <div class="extra_box">
-      <dl class="box_txt2" > <dt>アイテム数は約50万点！</dt>
-        <dd>
-          <p style="height: 94px;"><img src="https://auction.brandear.jp/images/ct/introduce02/cticon02.png" ></p>
-        </dd>
-        <dd class="extra_cap">ルイヴィトンだけで1万点！</dd>
-      </dl>
-      <p class="extra_under">ハイブランドだけでなくアパレルブランドも豊富に取り扱っております！</p>
-    </div>
-    <div class="extra_box">
-      <dl class="box_txt2" > <dt>下取りサービス</dt>
-        <dd>
-          <p style="height: 76px;"><img src="https://auction.brandear.jp/images/ct/introduce02/cticon04.png" ></p>
-        </dd>
-        <dd class="extra_cap">過去のアイテムを下取りに出して新アイテムを割引価格で購入！</dd>
-      </dl>
-      <p class="extra_under" ><a href="/ct/howto/" title="" class="link kochira">詳細はこちら</a><br><br></p>
-    </div>
-  </div>
-</div>
-
-<div class="extra"><span>ご注意</span></div>
-<style>
-.sprite_size {
-  background: url(/img/sprite_ext.png) no-repeat;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-position: -234px -86px;
-}
-.sprite_extra {
-  background: url(/img/sprite_ext.png) no-repeat;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-position: -180px -86px;
-}
-.sprite_material {
-  background: url(/img/sprite_ext.png) no-repeat;
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-position: -234px -140px;
-}
-@media (min-width: 700px) {
-  .optional_list {
-    display: inline-block;
-  }
-}
-.optional_list span {
-  vertical-align: super;
-}
-</style>
-<div class="optional_list">
-  <a href="/ct/help-size" target="_blank"><i class="sprite_size"></i>
-    <span>サイズ表記について</span></a>
-</div>
-<div class="optional_list">
-  <a href="https://defactostandard.co.jp/auction/yougo/fuzoku.html" target="_blank"><i class="sprite_extra"></i>
-    <span>付属品について</span></a>
-</div>
-<div class="optional_list">
-  <a href="https://defactostandard.co.jp/auction/yougo/sozai_hikaku.html" target="_blank"><i class="sprite_material"></i>
-    <span>素材について</span></a>
-</div>
-  
-<div style="font-size: 14px;margin: 10px;">
-  <p>※基本的に返品はお受けできませんので、商品詳細をよくご確認の上、ご入札くださいませ。</p>
-  <p>※システムトラブル等の原因により、弊社にてオークションを中断し、終了させて頂く場合がございます。 誠に恐縮ではございますが、予めご了承の上、ご入札頂けます様お願い申し上げます。</p>
-  <p>※この商品は自動延長が設定されています。</p>
-  <p>  オークション終了5分前に入札が入ると、自動的に5分間入札受付時間が最長で1時間延長されます。</p>
-  <p ><i ></i>💳
-    銀行振込・代金引換・<a href="/ct/help-payment/" target="brank">クレジットカード・コンビ二決済</a>&nbsp;ご利用できます。
-  </p>
-  <p ><i ></i>🛒
-    お得な<a href="/ct/help-doukon/" target="brank">まとめ買い</a>が可能!!
-  </p>
-  <p ><i ></i>🧺
-    洋服の「<a href="/ct/help-cleaning/" target="brank">クリーニング</a>」<span class="fs_13">サービスあり</span>
-  </p>
-  <p ><i ></i>🚚
-    PM3時までにご注文で翌日午前中着！<a href="/ct/help-tokkyu/" target="brank">特急配送サービス</a>
-  </p>
-  <p>※『USED品』です。画像を参考にご入札ください。</p>
-  <p>※左右・前後で着丈の長さが違う場合は、最短と最長の長さを以下のように表示します。<br>
-    　例）80～90cm　（最短が80cm、最長が90cm）</p>
-  <p>※商品は終了時間前に出品を取り消す場合がございます。お早めにご入札ください。</p>
-  <p>※弊社では当サイト以外での販売も行っております。商品売り切れの際には、お取引・出品をキャンセルさせていただく場合がございます。予めご了承くださいませ。</p>
-</div>
-<style>
 .footer a {
-  margin:10px;
+  padding: 2px 10px;
   font-size: 14px;
+  width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  color: whitesmoke;
 }
 </style>
 
 <div class="footer">
 <a href="/">ご利用ガイド</a><a href="/">お問い合わせ</a><a href="/">会社概要</a><a href="/">ご利用規約</a>
 <a href="/">プライバシーポリシー</a><a href="/">特定商取引法に基づく表記</a><a href="/">特定商取引法に基づく表記</a>
-<div>Copyright(c) Defactostandard,Ltd. All rights reserved.</div>
+<div style="padding:10px;color:silver;">Copyright(c) Defactostandard,Ltd. All rights reserved.</div>
 </div>
-<br>
-<br>
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-57298122-1"></script>
 <script>
 

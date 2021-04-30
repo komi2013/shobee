@@ -235,17 +235,39 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		sort.Slice(breadCrumb, func(i, j int) bool { return breadCrumb[i].Level < breadCrumb[j].Level }) // DESC
 	}
 
+	type review struct {
+		ReviewScore float64
+		ReviewTxt   string
+	}
+	query = `SELECT review_score,review_txt FROM h_review WHERE category_id = $1 AND genre_id = $2`
+	rows, err = db.Query(query, s.CategoryId, s.GenreId)
+	if err != nil {
+		fmt.Println(query)
+		fmt.Println(err)
+	}
+	var re review
+	var reviews []review
+	for rows.Next() {
+		if err := rows.Scan(&re.ReviewScore, &re.ReviewTxt); err != nil {
+			log.Print(err)
+		}
+		reviews = append(reviews, re)
+	}
+	fmt.Printf("%#v\n", reviews)
+
 	type View struct {
 		Sku             sku
 		TranslationItem translationItem
 		VariationList   map[int]map[string]string
 		BreadCrumb      []category
+		Reviews         []review
 	}
 	var view View
 	view.Sku = s
 	view.TranslationItem = t
 	view.VariationList = vList
 	view.BreadCrumb = breadCrumb
+	view.Reviews = reviews
 	tpl := template.Must(template.ParseFiles("view/item.tmpl"))
 	tpl.Execute(w, view)
 }
