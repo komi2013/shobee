@@ -11,9 +11,10 @@ import (
 
 func main() {
 
-	http.HandleFunc("/test/", app.Test)
-	http.HandleFunc("/item/", app.Item)
 	http.HandleFunc("/htm/", app.Htm)
+	http.HandleFunc("/item/", app.Item)
+	http.HandleFunc("/list/", app.List)
+	http.HandleFunc("/test/", app.Test)
 
 	// http.HandleFunc("/", app.Top)
 	// fmt.Println("starting.." + common.CacheV)

@@ -12,9 +12,6 @@
   </head>
 <style>
 
-@media (max-width: 700px) {
-
-}
 @media (min-width: 700px) {
   body {
     width: 960px;
@@ -29,16 +26,10 @@
 }
 .header div {
   display: inline-block;
-  text-align: center;
 }
-.header_left {
-  display: inline-block;
-  width: 25%;
-  text-align: center;
-}
-.header input {
+.search {
   height: 42px;
-  width:  100%;
+  width:  98%;
   border-right: none;
   border-left: none;
   border-top: none;
@@ -47,26 +38,108 @@
   color:white;
   font-size: 18px;
 }
+.header img {
+  margin-top: 10px;
+  max-height: 32px;
+}
+
+#search_detail + input {
+  width: 9%;
+  height: 48px;
+  cursor: pointer;
+  opacity: 0;
+  position: absolute;
+  left: 90%;
+}
+#search_detail + input:checked + .dd2_2 {
+  visibility: visible;
+}
+@media (max-width: 700px) {
+  .dd2_2{
+    visibility: hidden;
+    position: absolute;
+    background-color: gainsboro;
+    margin: 50px 0 0 -300px;
+    width: 300px;
+    text-align: left;
+  }
+}
+@media (min-width: 700px) {
+  .dd2_2{
+    visibility: hidden;
+    position: absolute;
+    text-align: left;
+    background-color: gainsboro;
+    margin: 50px 0 0 -400px;
+    width: 400px;
+    padding: 10px;
+  }
+}
+.dd2_2 div {
+  padding: 4% 2%;
+}
+.dd2_2 input {
+  height: 42px;
+  border-radius: 10px;
+}
+.dd2_2 select {
+  padding: 14px 2px;
+  width: 280px;
+  border-radius: 10px;
+  background-color: white;
+}
+.multi_option {
+  display: inline-block;
+  background-color: white;
+  padding: 3px;
+  border-radius: 10px;
+}
+.search_submit {
+  opacity: 0;
+  position: absolute;
+  height: 50px;
+  width: 32px;
+}
 </style>
 <body>
 
+<form action="/list/" >
 <div class="header" >
-  <div style="width: 10%;">
+  <div style="width: 10%;text-align: center;">
     <a href="/" >
-      <img src="/img/man.png" style="margin-top: 10px;max-height: 32px;" >
-      <!-- <span style="vertical-align: super;">login</span> -->
+      <img src="/img/man.png" >
     </a>
   </div>
-  <div style="width: 80%;" >
-    <input type="text" >
+  <div style="width: 70%;text-align: center;" >
+    <input type="text" name="word" class="search" >
   </div>
-  <div style="width: 10%;text-align: left;" >
-    <img src="/img/glass.png" style="margin-top: 10px;max-height: 32px;">
+  <div style="width: 10%;text-align: left;position: relative;" >
+    <input type="submit" class="search_submit">
+    <img src="/img/glass.png">
   </div>
-  <!-- <div href="/">
-    <img src="/img/brandear.jpg" style="height:40px;display: none;">
-  </div> -->
+  <div style="width: 10%;text-align: center;">
+    <img src="/img/filter.png" id="search_detail" >
+    <input type="checkbox" >
+    <div class="dd2_2">
+      <div>含まないキーワード<br><input type="text" name="column1" placeholder="含まないキーワード"></div>
+      <div>
+        <select name="column2">
+          <option value="">ブランド--</option>
+          <option value="dog">Dogdd</option>
+          <option value="cat">Cat</option>
+        </select>
+      </div>
+      <div>
+        <input type="text" placeholder="低い価格" name="price[0]" style="width: 100px;"> ~ <input type="text" placeholder="高い価格" name="price[1]" style="width: 100px;">
+      </div><br>
+      <div>ブランド<br>
+        <label for="scales" class="multi_option"><input type="checkbox" id="scales">Scales</label>
+        <label for="scales1" class="multi_option"><input type="checkbox" id="scales1">Scales1</label>
+      </div>
+    </div>
+  </div>
 </div>
+</form>
 
 <style>
 .bread_crumb {
@@ -89,20 +162,13 @@
   <!-- {end} -->
 </div>
 
-<style>
-
-
-</style>
-
 <!-- jpeg 150x150(search), 300x300(detail), 600x600(original) -->
-
 <style>
 
 .main {
   display: flex;
   flex-wrap: wrap;
 }
-
 @media (min-width: 700px) {
   .main_left {
     width: 65%;
@@ -246,24 +312,24 @@
 
 <style>
 .star5_rating{
-    position: relative;
-    z-index: 0;
-    display: inline-block;
-    white-space: nowrap;
-    color: silver;
-    font-size: 20px;
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+  white-space: nowrap;
+  color: silver;
+  font-size: 20px;
 }
 .star5_rating:before, .star5_rating:after{
-    content: '★★★★★';
+  content: '★★★★★';
 }
 .star5_rating:after{
-    position: absolute;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    color: yellow;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: yellow;
 }
 .star5_rating[data-rate="5"]:after{ width: 100%; } /* 星5 */
 .star5_rating[data-rate="4.5"]:after{ width: 90%; } /* 星4.5 */
@@ -278,7 +344,6 @@
 .star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
 
 </style>
-
 
 <div style="margin: 20px;" >オールドイングランドのバッグ&nbsp;&nbsp;&nbsp;総合評価　
   <span class="word star5_rating" data-rate="3.5"></span>&nbsp;&nbsp;&nbsp;

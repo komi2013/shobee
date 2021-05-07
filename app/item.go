@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"sort"
 	"strconv"
+	"encoding/json"
 
 	// "strconv"
 	"strings"
@@ -36,14 +37,14 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	query := `SELECT sku_imgs,sku_price,model_number,category_id,genre_id,sku_quantity
-	FROM t_sku WHERE item_id = $1 limit 1` // if multiple variation
+	FROM t_sku WHERE item_id = $1` // if multiple variation
 	rows, err := db.Query(query, itemId)
 	if err != nil {
 		fmt.Println(query)
 		fmt.Println(err)
 	}
 	type sku struct {
-		SkuImgs     string
+		SkuImgs     []string
 		SkuPrice    float64
 		ModelNumber string
 		CategoryId  int
@@ -52,9 +53,13 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	}
 	var s sku
 	for rows.Next() {
-		if err := rows.Scan(&s.SkuImgs, &s.SkuPrice, &s.ModelNumber, &s.CategoryId, &s.GenreId, &s.SkuQuantity); err != nil {
+		imgs := ""
+		if err := rows.Scan(&imgs, &s.SkuPrice, &s.ModelNumber, &s.CategoryId, &s.GenreId, &s.SkuQuantity); err != nil {
 			log.Print(err)
 		}
+		// s.SkuImgs, _ := json.Marshal(arr)
+		json.Unmarshal([]byte(imgs), &s.SkuImgs)
+		
 	}
 
 	query = `SELECT item_name,item_description,item_exact_name
@@ -75,54 +80,6 @@ func Item(w http.ResponseWriter, r *http.Request) {
 			log.Print(err)
 		}
 	}
-
-	query = `SELECT variation_id, description_flg,variation_description_` + lang + // lang is not allow special characters
-		`, tier_type FROM t_variation WHERE item_id = $1`
-	rows, err = db.Query(query, itemId)
-	if err != nil {
-		fmt.Println(query)
-		fmt.Println(err)
-	}
-	vList := map[int]map[string]string{}
-	ids := "-1"
-	for rows.Next() {
-		list := map[string]string{}
-		id := 0
-		flg := ""
-		description := ""
-		tier := ""
-		if err := rows.Scan(&id, &flg, &description, &tier); err != nil {
-			log.Print(err)
-		}
-		ids = ids + "," + strconv.Itoa(id)
-		list["description_flg"] = flg
-		list["variation_description"] = description
-		list["tier_type"] = tier
-		vList[id] = list
-	}
-
-	query = `SELECT variation_id, variation_name_` + lang + `,variation_value_` + lang +
-		` FROM m_variation WHERE variation_id in (` + ids + `)`
-	rows, err = db.Query(query)
-	if err != nil {
-		fmt.Println(query)
-		fmt.Println(err)
-	}
-	for rows.Next() {
-		list := map[string]string{}
-		id := 0
-		name := ""
-		value := ""
-		if err := rows.Scan(&id, &name, &value); err != nil {
-			log.Print(err)
-		}
-		list["variation_name"] = name
-		list["variation_value"] = value
-		vList[id] = list
-	}
-	fmt.Printf("%#v\n", vList)
-	// fmt.Printf("%#v\n", ids)
-
 	type category struct {
 		Level        int
 		CategoryID   int
@@ -150,12 +107,14 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		log.Print(err)
 	}
 	whereIn := ""
+	topCategory := ""
 	for rows.Next() {
 		r := mCategoryTree{}
 		if err := rows.Scan(&r.LeafID, &r.Level1, &r.Level2, &r.Level3, &r.Level4, &r.Level5, &r.Level6, &r.Level7, &r.Level8, &r.UpdatedAt); err != nil {
 			log.Print(err)
 		}
 		whereIn = strconv.Itoa(r.Level1)
+		topCategory = strconv.Itoa(r.Level1)
 		x[0] = 1
 		x[1] = r.Level1
 		tree = append(tree, x)
@@ -211,63 +170,159 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	var breadCrumb []category
-	if whereIn != "" {
-		rows, err = db.Query(`SELECT category_id, category_name_` + lang + ` FROM m_category WHERE category_id in (` + whereIn + `)`)
-		if err != nil {
+
+	rows, err = db.Query(`SELECT category_id, category_name_` + lang +
+		` FROM m_category WHERE category_id in (` + whereIn + `)`)
+	if err != nil {
+		log.Print(err)
+	}
+	for rows.Next() {
+		r := category{}
+		if err := rows.Scan(&r.CategoryID, &r.CategoryName); err != nil {
 			log.Print(err)
 		}
-		for rows.Next() {
-			r := category{}
-			if err := rows.Scan(&r.CategoryID, &r.CategoryName); err != nil {
-				log.Print(err)
+		convert[r.CategoryID] = r.CategoryName
+	}
+	for _, v := range tree {
+		y := category{}
+		y.Level = v[0]
+		y.CategoryID = v[1]
+		y.CategoryName = convert[v[1]]
+		breadCrumb = append(breadCrumb, y)
+	}
+	sort.Slice(breadCrumb, func(i, j int) bool { return breadCrumb[i].Level < breadCrumb[j].Level }) // DESC
+
+	query = `SELECT variation_id, variation_type,variation_description_` + lang + // lang is not allow special characters
+		`, tier_type FROM t_variation WHERE item_id = $1`
+	rows, err = db.Query(query, itemId)
+	if err != nil {
+		fmt.Println(query)
+		fmt.Println(err)
+	}
+	vList := map[int]map[string]string{}
+	ids := "-1"
+	for rows.Next() {
+		list := map[string]string{}
+		id := 0
+		flg := ""
+		description := ""
+		tier := ""
+		if err := rows.Scan(&id, &flg, &description, &tier); err != nil {
+			log.Print(err)
+		}
+		ids = ids + "," + strconv.Itoa(id)
+		list["variation_type"] = flg
+		list["variation_value"] = description
+		list["tier_type"] = tier
+		vList[id] = list
+	}
+	fmt.Printf("%#v\n", vList)
+	query = `SELECT variation_id, variation_name_` + lang + `,variation_value_` + lang +
+		`, search_category_id, search_type FROM m_variation WHERE variation_id in (` + ids +
+		`) OR search_category_id in (` + whereIn + `,0) `
+	rows, err = db.Query(query)
+	if err != nil {
+		fmt.Println(query)
+		fmt.Println(err)
+	}
+	searchList :=  map[string][][]string{}
+	for rows.Next() {
+		id := 0
+		name := ""
+		value := ""
+		catId := -1
+		sType := "0"
+		if err := rows.Scan(&id, &name, &value, &catId, &sType); err != nil {
+			log.Print(err)
+		}
+
+		if _, ok := vList[id]; ok {
+			list := map[string]string{}
+			list["variation_name"] = name
+			if vList[id]["variation_type"] == "0" {
+				list["variation_value"] = value
+			} else {
+				list["variation_value"] = vList[id]["variation_value"]
 			}
-			convert[r.CategoryID] = r.CategoryName
-			// categoryName = append(categoryName, r)
-			// breadCrumb[r.CategoryID]["name"] = r.CategoryName
+			vList[id] = list
 		}
-		for _, v := range tree {
-			y := category{}
-			y.Level = v[0]
-			y.CategoryID = v[1]
-			y.CategoryName = convert[v[1]]
-			breadCrumb = append(breadCrumb, y)
+		if catId > -1 { // search_category_id records < variation_id records
+			list2 := []string{strconv.Itoa(id),value,sType}
+			searchList[name] = append(searchList[name],list2)
 		}
-		sort.Slice(breadCrumb, func(i, j int) bool { return breadCrumb[i].Level < breadCrumb[j].Level }) // DESC
 	}
 
-	type review struct {
-		ReviewScore float64
-		ReviewTxt   string
+	type search struct {
+		Name    string
+		SType   string
+		Values  [][]string
 	}
-	query = `SELECT review_score,review_txt FROM h_review WHERE category_id = $1 AND genre_id = $2`
+	var seaList []search
+	for k, v := range searchList {
+		var sea search
+		sea.Name   = k
+		var list2  [][]string
+		for _, v2 := range v {
+			sea.SType  = v2[2]
+			list3 := []string{v2[0],v2[1]}
+			list2 = append(list2,list3)
+		}
+		sea.Values = list2
+		seaList = append(seaList,sea)
+	}
+	fmt.Printf("%#v\n", ids)
+	
+	query = `SELECT ROUND(AVG(review_score),1) FROM h_review 
+		WHERE category_id = $1 AND genre_id = $2
+		GROUP BY category_id, genre_id`
 	rows, err = db.Query(query, s.CategoryId, s.GenreId)
 	if err != nil {
 		fmt.Println(query)
 		fmt.Println(err)
 	}
-	var re review
-	var reviews []review
+	var reviewScore float64
 	for rows.Next() {
-		if err := rows.Scan(&re.ReviewScore, &re.ReviewTxt); err != nil {
+		if err := rows.Scan(&reviewScore); err != nil {
 			log.Print(err)
 		}
-		reviews = append(reviews, re)
 	}
-	fmt.Printf("%#v\n", reviews)
-
+	query = `SELECT genre_id, genre_name_` + lang +` FROM m_genre`
+	rows, err = db.Query(query)
+	if err != nil {
+		fmt.Println(query)
+		fmt.Println(err)
+	}
+	type genre struct {
+		ID   string
+		Name string
+	}
+	var genres []genre
+	for rows.Next() {
+		var g genre
+		if err := rows.Scan(&g.ID,&g.Name); err != nil {
+			log.Print(err)
+		}
+		genres = append(genres,g)
+	}
 	type View struct {
 		Sku             sku
 		TranslationItem translationItem
 		VariationList   map[int]map[string]string
 		BreadCrumb      []category
-		Reviews         []review
+		ReviewScore     float64
+		SearchList      []search
+		TopCategory		string
+		Genres          []genre
 	}
 	var view View
 	view.Sku = s
 	view.TranslationItem = t
 	view.VariationList = vList
 	view.BreadCrumb = breadCrumb
-	view.Reviews = reviews
+	view.ReviewScore = reviewScore
+	view.SearchList = seaList
+	view.TopCategory = topCategory
+	view.Genres = genres
 	tpl := template.Must(template.ParseFiles("view/item.tmpl"))
 	tpl.Execute(w, view)
 }
