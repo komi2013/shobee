@@ -4,10 +4,8 @@
     <meta charset="UTF-8" />
     <title>Brandear</title>
     <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
-    <script src="/plugin/min.js"></script>
+    <!-- <script src="/plugin/min.js"></script> -->
     <link rel="stylesheet" href="/css/common.css" />
-    <link rel="stylesheet" href="/css/pc.css" media="only screen and (min-width : 700px)">
-    <link rel="stylesheet" href="/css/sp.css" media="only screen and (max-width : 700px)">
     <meta name="viewport" content="width=device-width, user-scalable=no" >
   </head>
 <style>
@@ -115,25 +113,57 @@
 .multi_option input:checked + .option_ui {
   background-color: gray;
 }
+.sprite_man{
+  background: url("/img/header1.png") no-repeat;
+  display: inline-block;
+  width: 28px;
+  height: 40px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 5px;
+}
+.sprite_search{
+  background: url("/img/header1.png") no-repeat;
+  display: inline-block;
+  width: 32px;
+  height: 40px;
+  background-position: -28px 0px;
+  background-size: 96px 32px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 5px;
+}
+.sprite_filter{
+  background: url("/img/header1.png") no-repeat;
+  display: inline-block;
+  width: 32px;
+  height: 40px;
+  background-position: -64px 0px;
+  background-size: 96px 32px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 5px;
+}
 </style>
 <body>
 
 <form action="/list/" >
 <div class="header" >
   <div style="width: 12%;text-align: center;">
-    <a href="/" >
-      <img src="/img/man.png" >
-    </a>
+    <a href="/" class="sprite_man"></a>
   </div>
   <div style="width: 60%;text-align: center;" >
     <input type="text" name="word" class="search" >
   </div>
   <div style="width: 12%;text-align: center;position: relative;" >
     <input type="submit" class="search_submit">
-    <img src="/img/glass.png">
+    <i class="sprite_search"></i>
   </div>
   <div style="width: 10%;text-align: center;position: relative;">
-    <img src="/img/filter.png" id="search_detail" >
+    <i id="search_detail" class="sprite_filter"></i>
     <input type="checkbox" >
     <div class="dropdown">
       {{ range $k, $v := .SearchList }}
@@ -371,22 +401,9 @@
 <div class="footer">
 <a href="/">ご利用ガイド</a><a href="/">お問い合わせ</a><a href="/">会社概要</a><a href="/">ご利用規約</a>
 <a href="/">プライバシーポリシー</a><a href="/">特定商取引法に基づく表記</a><a href="/">特定商取引法に基づく表記</a>
-<div style="padding:10px;color:silver;">Copyright(c) Defactostandard,Ltd. All rights reserved.</div>
+<div style="padding:10px;color:silver;">Copyright(c) Ltd. All rights reserved.</div>
 </div>
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-57298122-1"></script>
-<script>
-
-function swLang(lang){
-  document.cookie = 'lang='+lang+'; Path=/; Expires=Thu, 01 Jan 2099 00:00:01 GMT;';
-  location.href = '';
-}
-
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-57298122-1');
-</script>
 
 </body>
 </html>

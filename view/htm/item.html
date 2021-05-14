@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Brandear</title>
+    <title>css html5</title>
     <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
     <script src="/plugin/min.js"></script>
     <link rel="stylesheet" href="/css/common.css" />
@@ -11,379 +11,49 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" >
   </head>
 <style>
-
-@media (min-width: 700px) {
-  body {
-    width: 960px;
-  }
-}
-
-.header {
-  display: flex;
-  flex-wrap: wrap;
-  background-color: black;
-  height: 50px;
-}
-.header div {
+/* input:invalid + .message::after {
   display: inline-block;
-}
-.search {
-  height: 42px;
-  width:  98%;
-  border-right: none;
-  border-left: none;
-  border-top: none;
-  background-color: black;
-  border-bottom-color: white;
-  color:white;
-  font-size: 18px;
-}
-.header img {
-  margin-top: 10px;
-  max-height: 32px;
+  content: "wrong";
+  color:red;
+} */
+.message {
+  display: block;
+  content: "wrong";
+  color:red;
 }
 
-#search_detail + input {
-  width: 9%;
-  height: 48px;
-  cursor: pointer;
-  opacity: 0;
-  position: absolute;
-  left: 90%;
-}
-#search_detail + input:checked + .dd2_2 {
-  visibility: visible;
-}
-@media (max-width: 700px) {
-  .dd2_2{
-    visibility: hidden;
-    position: absolute;
-    background-color: gainsboro;
-    margin: 50px 0 0 -300px;
-    width: 300px;
-    text-align: left;
-  }
-}
-@media (min-width: 700px) {
-  .dd2_2{
-    visibility: hidden;
-    position: absolute;
-    text-align: left;
-    background-color: gainsboro;
-    margin: 50px 0 0 -400px;
-    width: 400px;
-    padding: 10px;
-  }
-}
-.dd2_2 div {
-  padding: 4% 2%;
-}
-.dd2_2 input {
-  height: 42px;
-  border-radius: 10px;
-}
-.dd2_2 select {
-  padding: 14px 2px;
-  width: 280px;
-  border-radius: 10px;
-  background-color: white;
-}
-.multi_option {
-  display: inline-block;
-  background-color: white;
-  padding: 3px;
-  border-radius: 10px;
-}
-.search_submit {
-  opacity: 0;
-  position: absolute;
-  height: 50px;
-  width: 32px;
-}
 </style>
+
 <body>
 
-<form action="/list/" >
-<div class="header" >
-  <div style="width: 10%;text-align: center;">
-    <a href="/" >
-      <img src="/img/man.png" >
-    </a>
-  </div>
-  <div style="width: 70%;text-align: center;" >
-    <input type="text" name="word" class="search" >
-  </div>
-  <div style="width: 10%;text-align: left;position: relative;" >
-    <input type="submit" class="search_submit">
-    <img src="/img/glass.png">
-  </div>
-  <div style="width: 10%;text-align: center;">
-    <img src="/img/filter.png" id="search_detail" >
-    <input type="checkbox" >
-    <div class="dd2_2">
-      <div>含まないキーワード<br><input type="text" name="column1" placeholder="含まないキーワード"></div>
-      <div>
-        <select name="column2">
-          <option value="">ブランド--</option>
-          <option value="dog">Dogdd</option>
-          <option value="cat">Cat</option>
-        </select>
-      </div>
-      <div>
-        <input type="text" placeholder="低い価格" name="price[0]" style="width: 100px;"> ~ <input type="text" placeholder="高い価格" name="price[1]" style="width: 100px;">
-      </div><br>
-      <div>ブランド<br>
-        <label for="scales" class="multi_option"><input type="checkbox" id="scales">Scales</label>
-        <label for="scales1" class="multi_option"><input type="checkbox" id="scales1">Scales1</label>
-      </div>
-    </div>
-  </div>
-</div>
+<form id="app">
+  <label for="phone">telephone：</label>
+  <input type="tel" placeholder="08012345678" id="phone" name="phone"
+   pattern="[0-9]{1,11}" v-model="phone" >
+  <p class="message" v-if="!valid"> wrong </p>
+  <p @click="checking">check</p>
 </form>
 
-<style>
-.bread_crumb {
-  margin: 10px 2px;
-}
-.bread_crumb a {
-  color: black; 
-  font-weight: bold;
-  display: inline-block;
-  text-decoration: underline;
-}
-</style>
-
-<div class="bread_crumb">
-  <!-- { range $v := .BreadCrumb } -->
-  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ１ </a> > 
-  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ２ </a> > 
-  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ3 </a> > 
-  <a href="/category/{$v.Level}/{$v.CategoryID}/">カテゴリ4 </a> > 
-  <!-- {end} -->
-</div>
-
-<!-- jpeg 150x150(search), 300x300(detail), 600x600(original) -->
-<style>
-
-.main {
-  display: flex;
-  flex-wrap: wrap;
-}
-@media (min-width: 700px) {
-  .main_left {
-    width: 65%;
-    margin: 2%;
-  }
-  .sku {
-    width: 30%;
-  }
-}
-@media (max-width: 700px) {
-  .main_left {
-    width: 90%;
-    margin: 5% auto;
-  }
-  .sku {
-    width: 94%;
-    margin: 3% auto;
-  }
-}
-
-.horizon {
-  overflow-x: auto;
-  white-space: nowrap;
-}
-.horizon::-webkit-scrollbar {
-  background-color: #EEEEEE;
-}
-.horizon::-webkit-scrollbar-thumb {
-  background-color: #222222;
-  border-radius: 10px;
-}
-.horizon::-webkit-scrollbar-track {
-  background: rgba(100,100,100, .5);
-}
-.pics {
-  display: inline-block;
-}
-.pics img {
-  max-width: 400px;
-  max-height: 400px;
-}
-.var_name {
-  margin: 20px 10px 0px 10px;
-  display: inline-block;
-  color: gray;
-}
-.var_select {
-  padding: 10px 4px;
-  width: 280px;
-  border-color: gainsboro;
-  background-color: white;
-}
-</style>
-
-<div class="main">
-  <div class="main_left">
-  <div class="horizon">
-    <div class="pics">
-      <a href="https://image5.brandear.jp/image1/600/34940417_1.jpg" target=”_blank” >
-        <img src="https://image5.brandear.jp/image1/600/34940417_1.jpg">
-      </a>
-    </div>
-    <div class="pics">
-      <a href="https://image5.brandear.jp/image1/600/34940417_1.jpg" target=”_blank” >
-        <img src="https://image5.brandear.jp/image1/600/34940417_1.jpg">
-      </a>
-    </div>
-    <div class="pics">
-      <a href="https://image5.brandear.jp/image1/600/34940417_1.jpg" target=”_blank” >
-        <img src="https://image5.brandear.jp/image1/600/34940417_1.jpg">
-      </a>
-    </div>
-    <div class="pics">
-      <a href="https://image5.brandear.jp/image1/600/34940417_1.jpg" target=”_blank” >
-        <img src="https://image5.brandear.jp/image1/600/34940417_1.jpg">
-      </a>
-    </div>
-  </div>
-  </div>
-  <div class="sku">
-    <div style="margin: 10px; letter-spacing: 1.3px;color: #2D2D2D;font-size: 20px;">COMEX(コメックス) S レディース シルバー グリッター</div>
-    <div style="margin: 10px;letter-spacing: 2.8px;color: #555;font-weight: 700;font-size: 20px;">11,660 円</div>
-    <div class="var_name">Collection:</div>
-    <select name="var_option" class="var_select">
-      <option value="">ブランド--</option>
-      <option value="dog">Dogdd</option>
-      <option value="cat">Cat</option>
-    </select>
-    <div class="var_name">Collection:</div>
-    <select name="var_option" class="var_select">
-      <option value="">ブランド--</option>
-      <option value="dog">Dogdd</option>
-      <option value="cat">Cat</option>
-    </select>
-    <br><br>
-    <div>
-      一般的に言って、パンくずリストはページの上部に設置されていることが多い。だが下に設置しても何も問題ない。<br>
-    </div>
-  </div>
-</div>
-
-<style>
-.attr {
-  display: flex;
-  flex-wrap: wrap;
-}
-.attr_box {
-  display: inline-block;
-  width: 300px;
-  margin: 10px;
-}
-</style>
-
-<div class="attr">
-  <div class="attr_box">
-    <div class="var_name">name1:</div>
-    <div style="display: inline-block;" >value1</div>
-  </div>
-  <div class="attr_box">
-    <div class="var_name">name2:</div>
-    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
-  </div>
-  <div class="attr_box">
-    <div class="var_name">name2:</div>
-    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
-  </div>
-  <div class="attr_box">
-    <div class="var_name">name1:</div>
-    <div style="display: inline-block;" >value1</div>
-  </div>
-  <div class="attr_box">
-    <div class="var_name">name2:</div>
-    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
-  </div>
-  <div class="attr_box">
-    <div class="var_name">name2:</div>
-    <div style="display: inline-block;" >一般的に言って、パンくずリストはページの上部に設置されていることが多い。</div>
-  </div>
-</div>
-
-
-<style>
-.star5_rating{
-  position: relative;
-  z-index: 0;
-  display: inline-block;
-  white-space: nowrap;
-  color: silver;
-  font-size: 20px;
-}
-.star5_rating:before, .star5_rating:after{
-  content: '★★★★★';
-}
-.star5_rating:after{
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  color: yellow;
-}
-.star5_rating[data-rate="5"]:after{ width: 100%; } /* 星5 */
-.star5_rating[data-rate="4.5"]:after{ width: 90%; } /* 星4.5 */
-.star5_rating[data-rate="4"]:after{ width: 80%; } /* 星4 */
-.star5_rating[data-rate="3.5"]:after{ width: 70%; } /* 星3.5 */
-.star5_rating[data-rate="3"]:after{ width: 60%; } /* 星3 */
-.star5_rating[data-rate="2.5"]:after{ width: 50%; } /* 星2.5 */
-.star5_rating[data-rate="2"]:after{ width: 40%; } /* 星2 */
-.star5_rating[data-rate="1.5"]:after{ width: 30%; } /* 星1.5 */
-.star5_rating[data-rate="1"]:after{ width: 20%; } /* 星1 */
-.star5_rating[data-rate="0.5"]:after{ width: 10%; } /* 星0.5 */
-.star5_rating[data-rate="0"]:after{ width: 0%; } /* 星0 */
-
-</style>
-
-<div style="margin: 20px;" >オールドイングランドのバッグ&nbsp;&nbsp;&nbsp;総合評価　
-  <span class="word star5_rating" data-rate="3.5"></span>&nbsp;&nbsp;&nbsp;
-  <a href="/" target=”_blank” style="color: black; font-weight: bold; text-decoration: underline;" >詳細 > > </a>
-</div>
-
-<style>
-.footer {
-  padding: 10px;
-  background-color: black;
-}
-.footer a {
-  padding: 2px 10px;
-  font-size: 14px;
-  width: 100px;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: left;
-  color: whitesmoke;
-}
-</style>
-
-<div class="footer">
-<a href="/">ご利用ガイド</a><a href="/">お問い合わせ</a><a href="/">会社概要</a><a href="/">ご利用規約</a>
-<a href="/">プライバシーポリシー</a><a href="/">特定商取引法に基づく表記</a><a href="/">特定商取引法に基づく表記</a>
-<div style="padding:10px;color:silver;">Copyright(c) Defactostandard,Ltd. All rights reserved.</div>
-</div>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-57298122-1"></script>
 <script>
+var app = new Vue({
+  el: '#app',
+  data: {
+    valid: true,
+    phone: ""
+  },
+  methods: {
+    checking: function (k) {
+      console.log(this.phone);
+      regex =  /^[-]?([1-9]\d*|0)(\.\d+)?$/;
+      if(regex.test(this.phone) && this.phone.length < 6){
+        this.valid = true;
+      }else{
+        this.valid = false;
+      }
+    },
+  }
+});
 
-function swLang(lang){
-  document.cookie = 'lang='+lang+'; Path=/; Expires=Thu, 01 Jan 2099 00:00:01 GMT;';
-  location.href = '';
-}
-
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-57298122-1');
 </script>
 
 </body>
