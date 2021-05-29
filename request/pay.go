@@ -1,4 +1,4 @@
-package app
+package request
 
 import (
 	"fmt"
@@ -11,8 +11,8 @@ import (
 	// _ "github.com/lib/pq" // this driver for postgres
 )
 
-// Test page
-func Test(w http.ResponseWriter, r *http.Request) {
+// Pay page
+func Pay(w http.ResponseWriter, r *http.Request) {
 
 	// common.SetUser(w, r, 2)
 	lang := common.GetLang(w, r)

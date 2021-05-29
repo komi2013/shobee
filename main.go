@@ -5,16 +5,23 @@ import (
 	"log"
 	"net/http"
 
-	"demo/app"
+	"demo/request"
+
 	"demo/common"
 )
 
 func main() {
 
-	http.HandleFunc("/htm/", app.Htm)
-	http.HandleFunc("/item/", app.Item)
-	http.HandleFunc("/list/", app.List)
-	http.HandleFunc("/test/", app.Test)
+	http.HandleFunc("/htm/", request.Htm)
+	http.HandleFunc("/item/", request.Item)
+	http.HandleFunc("/list/", request.List)
+	http.HandleFunc("/pay/", request.Pay)
+	http.HandleFunc("/registerEmail/", request.RegisterEmail)
+	http.HandleFunc("/sign/", request.Sign)
+	http.HandleFunc("/test/", request.Test)
+
+	
+	
 
 	// http.HandleFunc("/", app.Top)
 	// fmt.Println("starting.." + common.CacheV)

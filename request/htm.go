@@ -1,4 +1,4 @@
-package app
+package request
 
 import (
 	"html/template"
