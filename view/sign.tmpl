@@ -66,9 +66,14 @@ input:invalid + .password1::after {
       </button>
     </div>
     <div>
-      <input type="email" placeholder="mail">
-      <input type="password" placeholder="password">
+      <form id="login" onsubmit="login()">
+      <input type="email" name="email" placeholder="mail" required 
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="must be email format" >
+      <input type="password" name="password" placeholder="password" required
+       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" 
+       title="at least one character, one number, one special character" >
       <input type="submit" value="login">
+      </form>
     </div>
   </div>
   <div class="signup">
@@ -82,13 +87,12 @@ input:invalid + .password1::after {
 
       <input type="password" name="password2" placeholder="password confirm" required 
       oninput="check(this)" >
-      <input type="text" name="givingName" placeholder="giving name" required pattern="[^/#&?%.\-+_=@ '&quot;]+">
       <input type="text" name="familyName" placeholder="family name" required pattern="[^/#&?%.\-+_=@ '&quot;]+">
+      <input type="text" name="givenName" placeholder="giving name" required pattern="[^/#&?%.\-+_=@ '&quot;]+">
       <input type="date" name="birthday" required>
       <input type="submit" value="登録" > 
       <!-- onclick="showErr()" -->
-    </form>
-      
+      </form>
     </div>
   </div>
 </div>
@@ -119,34 +123,31 @@ input:invalid + .password1::after {
 <script>
 
 function handleForm(event) { event.preventDefault(); } 
-var form = document.getElementById("register");
-form.addEventListener('submit', handleForm);
 
-function registering () {
-  var fd = new FormData(document.getElementById('register'));
-  fetch('/test/',
-    {
-        method: 'POST',
-        cache: 'no-cache',
-        body: fd
-    })
-    .then((res) => {
-        // if (!res.ok) {
-        //     throw new Error(`${res.status} ${res.statusText}`);
-        // }
-        return res.json();
-    })
+document.getElementById("login").addEventListener('submit', handleForm);
+function login () {
+  var fd = new FormData(document.getElementById('login'));
+  fetch('/login/',{method:'POST',cache:'no-cache',body:fd})
+    .then((res) => {return res.json();}) //if (!res.ok) { throw new Error(`${res.status} ${res.statusText}`);}
     .then((res) => {
       console.log(res);
       console.log(res["Status"]);
-      
-    })
-    // .catch((reason) => {
-    //     console.log(reason);
-    // })
-    ;
+      if(res["Status"] == 1){
+        // location.href = res["Redirect"];
+      }
+    }); //.catch((reason) => {console.log(reason);})
 }
 
+document.getElementById("register").addEventListener('submit', handleForm);
+function registering () {
+  var fd = new FormData(document.getElementById('register'));
+  fetch('/registerEmail/',{method:'POST',cache:'no-cache',body:fd})
+    .then((res) => {return res.json();})
+    .then((res) => {
+      console.log(res);
+      console.log(res["Status"]);
+    });
+}
 function check(input) {
   if (input.value != document.getElementsByName("password1")[0].value) {
       input.setCustomValidity('Password Must be Matching.');
