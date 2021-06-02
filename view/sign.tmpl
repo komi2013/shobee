@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>register</title>
+    <title>sign</title>
     <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
-    <script src="/plugin/min.js"></script>
+    <!-- <script src="/plugin/min.js"></script> -->
     <link rel="stylesheet" href="/css/common.css" />
     <meta name="viewport" content="width=device-width, user-scalable=no" >
   </head>
@@ -44,12 +44,9 @@ input {
   margin: 10px;
   padding: 10px;
 }
-/* .error {
-  display: none;
-} */
-input:invalid + .password1::after {
-  content: "at least one character, one number, one special character";
-  color: red;
+input[type=date] {
+  width: 40%;
+  display: inline-block;
 }
 
 </style>
@@ -58,39 +55,43 @@ input:invalid + .password1::after {
   <div class="signin">
     <div class="login-form-inner">
       <button id="google-login" class="btn-default btn-sns btn-sns-google">
-        Googleでログイン
+        {{ index .I18n "1" }}
       </button>
       <button id="facebook-login" class="btn-default btn-sns btn-sns-facebook">
         <i class="icon-facebook"></i>
-        Facebookでログイン
+        {{ index .I18n "2" }}
+      </button>
+      <button id="facebook-login" class="btn-default btn-sns btn-sns-facebook">
+        <i class="icon-facebook"></i>
+        {{ index .I18n "3" }}
       </button>
     </div>
     <div>
       <form id="login" onsubmit="login()">
-      <input type="email" name="email" placeholder="mail" required 
-      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="must be email format" >
-      <input type="password" name="password" placeholder="password" required
-       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" 
-       title="at least one character, one number, one special character" >
-      <input type="submit" value="login">
+      <input type="email" name="email" placeholder='{{ index .I18n "4" }}' required 
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title='{{ index .I18n "5" }}' >
+      <input type="password" name="password" placeholder='{{ index .I18n "6" }}' required
+       pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,12}$" 
+       title='{{ index .I18n "7" }}' >
+      <input type="submit" value='{{ index .I18n "8" }}'>
       </form>
     </div>
   </div>
   <div class="signup">
     <div>
       <form id="register" onsubmit="registering()">
-      <input type="email" name="email" placeholder="mail" required 
-      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="must be email format" >
-      <input type="password" name="password1" placeholder="password" required
+      <input type="email" name="email" placeholder='{{ index .I18n "4" }}' required 
+      pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="emailのフォーマットを入力" >
+      <input type="password" name="password1" placeholder='{{ index .I18n "6" }}' required
        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,12}$" 
-       title="at least one character, one number, one special character" >
+       title='{{ index .I18n "7" }}' >
 
-      <input type="password" name="password2" placeholder="password confirm" required 
+      <input type="password" name="password2" placeholder='{{ index .I18n "9" }}' required 
       oninput="check(this)" >
-      <input type="text" name="familyName" placeholder="family name" required pattern="[^/#&?%.\-+_=@ '&quot;]+">
-      <input type="text" name="givenName" placeholder="giving name" required pattern="[^/#&?%.\-+_=@ '&quot;]+">
-      <input type="date" name="birthday" required>
-      <input type="submit" value="登録" > 
+      <input type="text" name="familyName" placeholder='{{ index .I18n "10" }}' required pattern="[^/#&?%.\-+_=@ '&quot;]+">
+      <input type="text" name="givenName" placeholder='{{ index .I18n "11" }}' required pattern="[^/#&?%.\-+_=@ '&quot;]+">
+      <div style="margin-left: 5%;">{{ index .I18n "12" }}<input type="date" name="birthday" required></div>
+      <input type="submit" value='{{ index .I18n "13" }}' > 
       <!-- onclick="showErr()" -->
       </form>
     </div>
@@ -115,13 +116,15 @@ input:invalid + .password1::after {
 </style>
 
 <div class="footer">
-<a href="/">ご利用ガイド</a><a href="/">お問い合わせ</a><a href="/">会社概要</a><a href="/">ご利用規約</a>
-<a href="/">プライバシーポリシー</a><a href="/">特定商取引法に基づく表記</a><a href="/">特定商取引法に基づく表記</a>
+<a href="/">{{ index .Footer "1" }}</a><a href="/">{{ index .Footer "2" }}</a>
+<a href="/">{{ index .Footer "3" }}</a><a href="/">{{ index .Footer "4" }}</a>
+<a href="/">{{ index .Footer "5" }}</a><a href="/">{{ index .Footer "6" }}</a>
+<a href="/">{{ index .Footer "7" }}</a>
 <div style="padding:10px;color:silver;">Copyright(c) Ltd. All rights reserved.</div>
 </div>
 
 <script>
-
+var passwordMatch = '{{ index .I18n "14" }}';
 function handleForm(event) { event.preventDefault(); } 
 
 document.getElementById("login").addEventListener('submit', handleForm);
@@ -150,7 +153,7 @@ function registering () {
 }
 function check(input) {
   if (input.value != document.getElementsByName("password1")[0].value) {
-      input.setCustomValidity('Password Must be Matching.');
+      input.setCustomValidity(passwordMatch);
   } else {
       input.setCustomValidity('');
   }

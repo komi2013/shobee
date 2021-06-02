@@ -6,6 +6,7 @@ import (
 	"html/template"
 
 	"demo/common"
+	"demo/i18n"
 	// _ "github.com/lib/pq" // this driver for postgres
 )
 
@@ -14,11 +15,17 @@ func Sign(w http.ResponseWriter, r *http.Request) {
 
 	// common.SetUser(w, r, 2)
 	lang := common.GetLang(w, r)
-	fmt.Println("lang", lang)
+	// r.FormValue("warn")
+
+	// fmt.Println("%v", footer)
+	fmt.Println("%v", i18n.Footer(lang))
 	type View struct {
-		ReviewScore     float64
+		Footer		map[string]string
+		I18n		map[string]string
 	}
 	var view View
+	view.Footer = i18n.Footer(lang)
+	view.I18n = i18n.Sign(lang)
 	tpl := template.Must(template.ParseFiles("view/sign.tmpl"))
 	tpl.Execute(w, view)
 }
