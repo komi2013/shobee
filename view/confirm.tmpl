@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>confirm</title>
+    <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
+    <!-- <script src="/plugin/min.js"></script> -->
+    <link rel="stylesheet" href="/css/common.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" >
+  </head>
+<body>
+
+<style>
+  .box {
+    display: inline-block;
+    width: 150px;
+    margin:10px;
+  }
+  .box img {
+    max-width: 150px;
+    max-height: 150px;
+  }
+  .itemTxt {
+    height:100px;
+  }
+</style>
+
+
+{{ $yen := .I18n.yen }}
+
+<div class="items">
+  {{ range $v := .Carts }}
+  <div class="box">
+    <img src='{{ $v.SkuImg }}'>
+    <div class="itemTxt">{{ $v.ItemName }}</div>
+    <div>{{ $v.SkuPrice }} {{$yen}}</div>
+  </div>
+  {{ end }}
+</div>
+<div style="width:100%;text-align: center;border-radius: 20px;">
+  <input type="submit" value='{{ index .I18n.pay }}' style="width:200px;padding: 20px;margin: 20px;">
+</div>
+
+<style>
+.footer {
+  padding: 10px;
+  background-color: black;
+}
+.footer a {
+  padding: 2px 10px;
+  font-size: 14px;
+  width: 100px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: left;
+  color: whitesmoke;
+}
+</style>
+
+<div class="footer">
+<a href="/">{{ index .Footer "1" }}</a><a href="/">{{ index .Footer "2" }}</a>
+<a href="/">{{ index .Footer "3" }}</a><a href="/">{{ index .Footer "4" }}</a>
+<a href="/">{{ index .Footer "5" }}</a><a href="/">{{ index .Footer "6" }}</a>
+<a href="/">{{ index .Footer "7" }}</a>
+<div style="padding:10px;color:silver;">Copyright(c) Ltd. All rights reserved.</div>
+</div>
+
+<script>
+var passwordMatch = '{{ index .I18n "14" }}';
+function handleForm(event) { event.preventDefault(); } 
+
+</script>
+
+</body>
+</html>
+

@@ -6,13 +6,13 @@ import (
 	"net/http"
 
 	"demo/request"
-
 	"demo/common"
 )
 
 func main() {
 
 	http.HandleFunc("/htm/", request.Htm)
+	http.HandleFunc("/confirm/", request.Confirm)
 	http.HandleFunc("/item/", request.Item)
 	http.HandleFunc("/list/", request.List)
 	http.HandleFunc("/login/", request.Login)

@@ -3,7 +3,7 @@ package request
 import (
 	"fmt"
 	// "database/sql"
-	// "log"
+	"log"
 	"net/http"
 	// "strconv"
 
@@ -19,5 +19,12 @@ func Top(w http.ResponseWriter, r *http.Request) {
 	buyerID := common.GetUser(w, r)
 	fmt.Println("lang", lang)
 	fmt.Println(buyerID)
+
+	if r.URL.Path != "/" {
+		log.Print(r.URL.Path)
+		http.NotFound(w, r)
+		return
+	}
+	
 	fmt.Fprint(w, `{"Status":"1"}`)
 }

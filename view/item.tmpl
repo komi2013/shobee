@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Brandear</title>
+    <title>{{.TranslationItem.ItemName}}</title>
     <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
     <!-- <script src="/plugin/min.js"></script> -->
     <link rel="stylesheet" href="/css/common.css" />
@@ -44,11 +44,11 @@
   opacity: 0;
   position: absolute;
   height: 50px;
-  width: 100%;
+  width: 40px;
   left: 0;
 }
 #search_detail + input {
-  width: 100%;
+  width: 40px;
   height: 48px;
   cursor: pointer;
   opacity: 0;
@@ -119,11 +119,9 @@
   width: 28px;
   height: 40px;
   cursor: pointer;
-  position: absolute;
-  top: 10px;
-  left: 5px;
+  margin-top: 10px;
 }
-.sprite_search{
+.sprite_filter{
   background: url("/img/header1.png") no-repeat;
   display: inline-block;
   width: 32px;
@@ -135,7 +133,7 @@
   top: 10px;
   left: 5px;
 }
-.sprite_filter{
+.sprite_search{
   background: url("/img/header1.png") no-repeat;
   display: inline-block;
   width: 32px;
@@ -189,15 +187,16 @@
       {{end}}
       <div>
         <select name="GenreId">
-          <option value=""> - - Genre - - </option>
+          <option value=""> - - {{ index .I18n "1" }} - - </option>
           {{range $v := .Genres}}
           <option value="{{$v.ID}}">{{$v.Name}}</option>
           {{end}}
         </select>
       </div>
-      <div><input type="text" name="exclude" placeholder="含まないキーワード"></div>
+      <div><input type="text" name="exclude" placeholder='{{ index .I18n "2" }}'></div>
       <div>
-        <input type="text" placeholder="低い価格" name="minPrice" style="width: 100px;"> ~ <input type="text" placeholder="高い価格" name="maxPrice" style="width: 100px;">
+        <input type="text" placeholder='{{ index .I18n "3" }}' name="minPrice" style="width: 100px;">
+         ~ <input type="text" placeholder='{{ index .I18n "4" }}' name="maxPrice" style="width: 100px;">
       </div>
     </div>
   </div>
@@ -221,7 +220,6 @@
   <a href="/list/{{$v.Level}}/{{$v.CategoryID}}/"> {{$v.CategoryName}} </a> > 
   {{end}}
 </div>
-  
 
 <!-- jpeg 150x150(search), 300x300(detail), 600x600(original) -->
 <style>
@@ -299,7 +297,7 @@
   </div>
   <div class="sku">
     <div style="margin: 10px; letter-spacing: 1.3px;color: #2D2D2D;font-size: 20px;">{{.TranslationItem.ItemName}}</div>
-    <div style="margin: 10px;letter-spacing: 2.8px;color: #555;font-weight: 700;font-size: 20px;">{{.Sku.SkuPrice}} 円</div>
+    <div style="margin: 10px;letter-spacing: 2.8px;color: #555;font-weight: 700;font-size: 20px;">{{.Sku.SkuPrice}} {{ index .I18n "5" }}</div>
     <!-- <div class="var_name">Collection:</div>
     <select name="var_option" class="var_select">
       <option value="">ブランド--</option>
@@ -316,6 +314,12 @@
     <div>
       {{.TranslationItem.ItemDescription}}
     </div>
+    <br>
+    <form action="/confirm/" >
+      <input type="hidden" name="id" value="{{.Sku.SkuID}}">
+      <input type="hidden" name="quantity" value="{{.Sku.SkuQuantity}}">
+      <input type="submit" value='{{ index .I18n "6" }}' style="padding: 20px;border-radius: 20px; width:100%;">
+    </form>
   </div>
 </div>
 
@@ -376,10 +380,15 @@
 
 </style>
 
-<div style="margin: 20px;" >オールドイングランドのバッグ&nbsp;&nbsp;&nbsp;総合評価　
-  <span class="word star5_rating" data-rate="{{.ReviewScore}}"></span>&nbsp;&nbsp;&nbsp;
+<div style="margin: 20px;" > 
   <a href="/review/?CategoryId={{.TopCategory}}&GenreId={{.Sku.GenreId}}" target=”_blank”
-    style="color: black;font-weight: bold;display: inline-block;border-bottom: 1px solid gray;" >詳細 > > </a>
+    style="color: black;font-weight: bold;display: inline-block;border-bottom: 1px solid gray;" >
+    {{ $v := index .BreadCrumb 0 }} {{ $v.CategoryName }} &nbsp;&nbsp;&nbsp; |
+    &nbsp;&nbsp;&nbsp; {{ .GenreName }} &nbsp;&nbsp;&nbsp; 
+  </a>
+  <a href="/review/?CategoryId={{.TopCategory}}&GenreId={{.Sku.GenreId}}" target=”_blank”>
+    <span class="word star5_rating" data-rate="{{.ReviewScore}}"></span>
+  </a>
 </div>
 
 <style>
@@ -399,8 +408,10 @@
 </style>
 
 <div class="footer">
-<a href="/">ご利用ガイド</a><a href="/">お問い合わせ</a><a href="/">会社概要</a><a href="/">ご利用規約</a>
-<a href="/">プライバシーポリシー</a><a href="/">特定商取引法に基づく表記</a><a href="/">トップ</a>
+<a href="/">{{ index .Footer "1" }}</a><a href="/">{{ index .Footer "2" }}</a>
+<a href="/">{{ index .Footer "3" }}</a><a href="/">{{ index .Footer "4" }}</a>
+<a href="/">{{ index .Footer "5" }}</a><a href="/">{{ index .Footer "6" }}</a>
+<a href="/">{{ index .Footer "7" }}</a>
 <div style="padding:10px;color:silver;">Copyright(c) Ltd. All rights reserved.</div>
 </div>
 

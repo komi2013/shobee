@@ -1,7 +1,7 @@
 package common
 
 import (
-	"fmt"
+	// "fmt"
 	"log"
 	"net/http"
 	"encoding/json"
@@ -33,9 +33,6 @@ func SetUser(w http.ResponseWriter, r *http.Request, uid int) {
         panic(err)
     }
 
-    fmt.Println("key", string(value))
-	fmt.Println("rand", rand)
-
 	cookie := &http.Cookie{
 		Name:     "ss",
 		Value:    rand,
@@ -54,34 +51,33 @@ func GetUser(w http.ResponseWriter, r *http.Request) int {
 		return 0
 	}
 	rdb := redis.NewClient(&redis.Options{
-        Addr:     RedisConnect,
-        Password: "", // no password set
-        DB:       0,  // use default DB
-    })
-    js, err := rdb.Get(ctx, cookie.Value).Result()
-    if err != nil {
-        panic(err)
-    }
-
-	log.Print("redis json: ", js)
+		Addr:     RedisConnect,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	js, err := rdb.Get(ctx, cookie.Value).Result()
+	if err != nil {
+		log.Print(err)
+		return 0
+	}
 	var d = []string{}
-    if err := json.Unmarshal([]byte(js), &d); err != nil {
-        panic(err)
-    }
-    fmt.Println(d[1])
+	if err := json.Unmarshal([]byte(js), &d); err != nil {
+		log.Print(err)
+		return 0
+	}
 	stampTime, err := time.Parse("2006-01-02 15:04:05", d[1])
 	if err != nil {
 		log.Print("time parse: ", err)
 	}
 	addDays := stampTime.AddDate(0, 0, 30)
-	fmt.Println(addDays)
+
 	if time.Now().After(addDays) {
 		log.Print(d[0] + "session expired")
 		return 0
 	}
 	stampTime, err = time.Parse("2006-01-02 15:04:05", d[2])
 	addDays = stampTime.AddDate(0, 0, 2)
-	fmt.Println(addDays)
+
 	if time.Now().After(addDays) { // regenerate session id
 		rdb.Del(ctx, cookie.Value)
 		rand := StringRand(20)
@@ -91,8 +87,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) int {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println("key", string(value))
-		fmt.Println("rand", rand)	
 		cookie := &http.Cookie{
 			Name:     "ss",
 			Value:    rand,
@@ -108,4 +102,29 @@ func GetUser(w http.ResponseWriter, r *http.Request) int {
 		panic(err)
 	}
 	return usrID
+}
+// SessionSet key is uid_ + **
+func SessionSet(uid int, key string, val string) {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     RedisConnect,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	err := rdb.Set(ctx, strconv.Itoa(uid) + "::" + key, val, 60000000000).Err() // 1 min
+	if err != nil {
+		log.Print(err)
+	}
+}
+// SessionGet
+func SessionGet(uid int, key string) string {
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     RedisConnect,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+	val, err := rdb.Get(ctx, strconv.Itoa(uid) + "::" + key).Result()
+	if err != nil {
+		log.Print(err)
+	}
+	return val
 }

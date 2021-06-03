@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"demo/common"
+	"demo/i18n"
 
 	_ "github.com/lib/pq"
 )
@@ -23,8 +24,7 @@ import (
 func Item(w http.ResponseWriter, r *http.Request) {
 
 	// common.SetUser(w, r, 2)
-	// uid := common.GetUser(w, r)
-	// fmt.Println("uid", uid)
+
 
 	lang := common.GetLang(w, r)
 	u := strings.Split(r.URL.Path, "/")
@@ -36,7 +36,7 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db.Close()
 
-	query := `SELECT sku_imgs,sku_price,model_number,category_id,genre_id,sku_quantity
+	query := `SELECT sku_imgs,sku_price,model_number,category_id,genre_id,sku_quantity,sku_id
 	FROM t_sku WHERE item_id = $1` // if multiple variation
 	rows, err := db.Query(query, itemId)
 	if err != nil {
@@ -48,13 +48,14 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		SkuPrice    float64
 		ModelNumber string
 		CategoryId  int
-		GenreId     int
+		GenreId     string
 		SkuQuantity float64
+		SkuID		int
 	}
 	var s sku
 	for rows.Next() {
 		imgs := ""
-		if err := rows.Scan(&imgs, &s.SkuPrice, &s.ModelNumber, &s.CategoryId, &s.GenreId, &s.SkuQuantity); err != nil {
+		if err := rows.Scan(&imgs,&s.SkuPrice,&s.ModelNumber,&s.CategoryId,&s.GenreId,&s.SkuQuantity,&s.SkuID); err != nil {
 			log.Print(err)
 		}
 		// s.SkuImgs, _ := json.Marshal(arr)
@@ -106,7 +107,7 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Print(err)
 	}
-	whereIn := ""
+	whereIn := "-1"
 	topCategory := ""
 	for rows.Next() {
 		r := mCategoryTree{}
@@ -216,7 +217,7 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		list["tier_type"] = tier
 		vList[id] = list
 	}
-	fmt.Printf("%#v\n", vList)
+	// fmt.Printf("%#v\n", vList)
 	query = `SELECT variation_id, variation_name_` + lang + `,variation_value_` + lang +
 		`, search_category_id, search_type FROM m_variation WHERE variation_id in (` + ids +
 		`) OR search_category_id in (` + whereIn + `,0) `
@@ -297,24 +298,33 @@ func Item(w http.ResponseWriter, r *http.Request) {
 		Name string
 	}
 	var genres []genre
+	var genreName string
 	for rows.Next() {
 		var g genre
 		if err := rows.Scan(&g.ID,&g.Name); err != nil {
 			log.Print(err)
 		}
 		genres = append(genres,g)
+		if g.ID == s.GenreId {
+			genreName = g.Name
+		}
 	}
 	type View struct {
-		Sku             sku
-		TranslationItem translationItem
-		VariationList   map[int]map[string]string
-		BreadCrumb      []category
-		ReviewScore     float64
-		SearchList      []search
+		Footer			map[string]string
+		I18n			map[string]string
+		Sku				sku
+		TranslationItem	translationItem
+		VariationList	map[int]map[string]string
+		BreadCrumb		[]category
+		ReviewScore		float64
+		SearchList		[]search
 		TopCategory		string
-		Genres          []genre
+		Genres			[]genre
+		GenreName		string
 	}
 	var view View
+	view.Footer = i18n.Footer(lang)
+	view.I18n = i18n.Item(lang)
 	view.Sku = s
 	view.TranslationItem = t
 	view.VariationList = vList
@@ -323,6 +333,7 @@ func Item(w http.ResponseWriter, r *http.Request) {
 	view.SearchList = seaList
 	view.TopCategory = topCategory
 	view.Genres = genres
+	view.GenreName = genreName
 	tpl := template.Must(template.ParseFiles("view/item.tmpl"))
 	tpl.Execute(w, view)
 }
